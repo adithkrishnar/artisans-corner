@@ -21,27 +21,30 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link to={`/product/${product._id}`} className="block group">
-      <div className="bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
+      <div className="card-dark overflow-hidden">
         {/* Image */}
-        <div className="relative h-52 overflow-hidden bg-gray-50">
+        <div className="relative h-52 overflow-hidden" style={{ background: '#1a1a1a' }}>
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
               alt={product.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
           ) : (
             <div
-              className="w-full h-full flex items-center justify-center text-5xl"
-              style={{ background: 'linear-gradient(135deg, #F0D5A0, #D4A96A)' }}
+              className="w-full h-full flex items-center justify-center text-4xl"
+              style={{ background: 'linear-gradient(135deg, #1a1000, #2d1a00)' }}
             >
               🎨
             </div>
           )}
 
+          {/* Overlay on hover */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)' }}></div>
+
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-              <span className="bg-white text-gray-800 text-xs font-bold px-3 py-1 rounded-full">
+            <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.7)' }}>
+              <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.1)', color: '#8a8070', border: '1px solid rgba(255,255,255,0.1)' }}>
                 Out of Stock
               </span>
             </div>
@@ -49,46 +52,41 @@ const ProductCard = ({ product }) => {
 
           {product.stock > 0 && product.stock <= 5 && (
             <div className="absolute top-3 left-3">
-              <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                Only {product.stock} left
-              </span>
+              <span className="badge-gold text-xs">Only {product.stock} left</span>
             </div>
           )}
         </div>
 
         {/* Content */}
         <div className="p-4">
-          <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">
+          <p className="text-xs uppercase tracking-widest mb-1.5" style={{ color: '#5a5045' }}>
             {product.store?.storeName || 'Artisan Store'}
           </p>
-          <h3 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 leading-snug">
+          <h3 className="font-semibold text-sm mb-2 line-clamp-2 leading-snug" style={{ color: '#f5f0e8' }}>
             {product.title}
           </h3>
 
-          <div className="flex items-center gap-1.5 mb-3">
+          <div className="flex items-center gap-1.5 mb-4">
             <StarRating rating={product.averageRating} />
-            <span className="text-xs text-gray-400">
-              ({product.totalReviews})
-            </span>
+            <span className="text-xs" style={{ color: '#5a5045' }}>({product.totalReviews})</span>
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <span
-                className="text-xl font-bold"
-                style={{ color: '#6B4226' }}
-              >
-                ${product.price}
-              </span>
-            </div>
+            <span className="text-xl font-bold gradient-text" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              ${product.price}
+            </span>
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white rounded-xl transition-all duration-200 hover:opacity-90 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40"
-              style={{ backgroundColor: product.stock > 0 ? '#6B4226' : '#9CA3AF' }}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+              style={{
+                background: product.stock > 0 ? 'linear-gradient(135deg, #c8922a, #e8b84b)' : '#2a2a2a',
+                color: product.stock > 0 ? '#0d0d0d' : '#5a5045',
+                boxShadow: product.stock > 0 ? '0 4px 15px rgba(200,146,42,0.3)' : 'none',
+              }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
               Add
             </button>
