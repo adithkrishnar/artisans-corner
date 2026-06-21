@@ -2,18 +2,18 @@ import { Link } from 'react-router-dom';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8] px-4">
-      <div className="text-center">
-        <div className="text-8xl mb-6">🎨</div>
-        <h1 className="text-6xl font-bold text-[#8B5E3C] mb-4">404</h1>
-        <h2 className="text-2xl font-semibold text-gray-700 mb-3">Page Not Found</h2>
-        <p className="text-gray-400 mb-8">The page you're looking for doesn't exist or has been moved.</p>
-        <Link
-          to="/"
-          style={{ backgroundColor: '#8B5E3C' }}
-          className="text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition"
-        >
-          Back to Home
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--cream)' }}>
+      <div className="text-center max-w-md animate-fade-up">
+        <p className="text-8xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--beige)' }}>404</p>
+        <div className="text-5xl mb-6">🎨</div>
+        <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
+          Page not found
+        </h2>
+        <p className="text-sm mb-8" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <Link to="/" className="btn-primary px-8 py-3.5 text-sm inline-block">
+          Back to Marketplace
         </Link>
       </div>
     </div>

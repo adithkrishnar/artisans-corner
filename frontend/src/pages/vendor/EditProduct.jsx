@@ -9,7 +9,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ title: '', description: '', price: '', stock: '', category: '' });
   const [image, setImage] = useState(null);
-  const [currentImage, setCurrentImage] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ const EditProduct = () => {
         const res = await getProductById(id);
         const p = res.data.product;
         setFormData({ title: p.title, description: p.description, price: p.price, stock: p.stock, category: p.category });
-        setCurrentImage(p.imageUrl);
+        setImagePreview(p.imageUrl);
       } catch (err) {
         setError('Failed to load product');
       } finally {
@@ -30,8 +30,14 @@ const EditProduct = () => {
     fetchProduct();
   }, [id]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -40,11 +46,7 @@ const EditProduct = () => {
     setError('');
     try {
       const data = new FormData();
-      data.append('title', formData.title);
-      data.append('description', formData.description);
-      data.append('price', formData.price);
-      data.append('stock', formData.stock);
-      data.append('category', formData.category);
+      Object.entries(formData).forEach(([k, v]) => data.append(k, v));
       if (image) data.append('image', image);
       await updateProduct(id, data);
       navigate('/dashboard/seller');
@@ -57,129 +59,94 @@ const EditProduct = () => {
 
   if (fetching) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">Loading product...</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--cream)' }}>
+        <div className="text-center">
+          <div className="w-10 h-10 rounded-full border-2 border-t-transparent mx-auto mb-4 animate-spin" style={{ borderColor: 'var(--terracotta)', borderTopColor: 'transparent' }}></div>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Loading product...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-[#8B5E3C]">Edit Product</h1>
-          <button onClick={() => navigate('/dashboard/seller')} className="text-sm text-gray-500 hover:text-gray-700">
-            Back to Dashboard
+    <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <div className="flex items-center gap-4 mb-8">
+          <button onClick={() => navigate('/dashboard/seller')} className="p-2 rounded-xl" style={{ background: 'var(--white)', border: '1px solid var(--border)' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" style={{ color: 'var(--text-secondary)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
           </button>
+          <div>
+            <p className="section-label">Dashboard</p>
+            <h1 className="text-2xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>Edit Product</h1>
+          </div>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 text-sm">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-              rows={4}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] resize-none"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-                min="0"
-                step="0.01"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
-              <input
-                type="number"
-                name="stock"
-                value={formData.stock}
-                onChange={handleChange}
-                required
-                min="0"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]"
+        <div className="grid md:grid-cols-5 gap-6">
+          <div className="md:col-span-2">
+            <div
+              className="aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden"
+              style={{ background: imagePreview ? 'transparent' : 'var(--white)', border: '2px dashed var(--border)' }}
+              onClick={() => document.getElementById('edit-image').click()}
             >
-              <option value="">Select a category</option>
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-center p-6">
+                  <div className="text-5xl mb-3">📸</div>
+                  <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>Click to change image</p>
+                </div>
+              )}
+              <input id="edit-image" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+            </div>
+            <p className="text-xs text-center mt-2" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+              Click to change image
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
-            {currentImage && (
-              <img src={currentImage} alt="Current" className="w-24 h-24 object-cover rounded-lg mb-2" />
+          <div className="md:col-span-3 card-flat">
+            {error && (
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-5 text-sm" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', color: '#dc2626' }}>
+                <span>⚠</span> {error}
+              </div>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm"
-            />
-            <p className="text-xs text-gray-400 mt-1">Leave empty to keep current image</p>
-          </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard/seller')}
-              className="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-lg font-semibold hover:bg-gray-50 transition"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              style={{ backgroundColor: '#8B5E3C' }}
-              className="flex-1 text-white py-2.5 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-60"
-            >
-              {loading ? 'Updating...' : 'Update Product'}
-            </button>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="form-group">
+                <label>Product Title *</label>
+                <input type="text" name="title" value={formData.title} onChange={handleChange} required className="input-field" />
+              </div>
+              <div className="form-group">
+                <label>Description *</label>
+                <textarea name="description" value={formData.description} onChange={handleChange} required rows={4} className="input-field resize-none" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="form-group">
+                  <label>Price ($) *</label>
+                  <input type="number" name="price" value={formData.price} onChange={handleChange} required min="0" step="0.01" className="input-field" />
+                </div>
+                <div className="form-group">
+                  <label>Stock *</label>
+                  <input type="number" name="stock" value={formData.stock} onChange={handleChange} required min="0" className="input-field" />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Category *</label>
+                <select name="category" value={formData.category} onChange={handleChange} required className="input-field">
+                  <option value="">Select category</option>
+                  {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+                </select>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => navigate('/dashboard/seller')} className="btn-ghost flex-1 py-3 text-sm">Cancel</button>
+                <button type="submit" disabled={loading} className="btn-primary flex-1 py-3 text-sm">
+                  {loading ? 'Saving...' : 'Save Changes →'}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

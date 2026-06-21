@@ -2,10 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../api/axios';
 
+const STATUS_STYLES = {
+  Processing: { bg: 'rgba(196,113,74,0.1)', color: 'var(--terracotta)', border: 'rgba(196,113,74,0.2)' },
+  Shipped: { bg: 'rgba(107,115,85,0.1)', color: 'var(--olive)', border: 'rgba(107,115,85,0.2)' },
+  Delivered: { bg: 'rgba(16,185,129,0.1)', color: '#059669', border: 'rgba(16,185,129,0.2)' },
+  Cancelled: { bg: 'rgba(239,68,68,0.1)', color: '#dc2626', border: 'rgba(239,68,68,0.2)' },
+};
+
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -13,7 +19,7 @@ const OrderHistory = () => {
         const res = await API.get('/orders/my-orders');
         setOrders(res.data.orders);
       } catch (err) {
-        setError('Failed to load orders');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -21,119 +27,104 @@ const OrderHistory = () => {
     fetchOrders();
   }, []);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Processing': return 'bg-blue-100 text-blue-700';
-      case 'Shipped': return 'bg-yellow-100 text-yellow-700';
-      case 'Delivered': return 'bg-green-100 text-green-700';
-      case 'Cancelled': return 'bg-red-100 text-red-600';
-      default: return 'bg-gray-100 text-gray-600';
-    }
-  };
-
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-400">Loading orders...</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--cream)' }}>
+        <div className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--terracotta)', borderTopColor: 'transparent' }}></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-[#8B5E3C] mb-8">My Orders</h1>
-
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-          {error}
+    <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
+      <div className="max-w-4xl mx-auto px-4 py-10">
+        <div className="mb-8">
+          <p className="section-label mb-1">Account</p>
+          <h1 className="text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>My Orders</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+            {orders.length} {orders.length === 1 ? 'order' : 'orders'} placed
+          </p>
         </div>
-      )}
 
-      {orders.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl shadow">
-          <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">No orders yet</h2>
-          <p className="text-gray-400 mb-6">Start shopping to see your orders here</p>
-          <Link
-            to="/"
-            style={{ backgroundColor: '#8B5E3C' }}
-            className="text-white px-6 py-2.5 rounded-xl font-semibold hover:opacity-90 transition"
-          >
-            Browse Products
-          </Link>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {orders.map((order) => (
-            <div key={order._id} className="bg-white rounded-2xl shadow p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-xs text-gray-400 mb-1">ORDER ID</p>
-                  <p className="text-sm font-medium text-gray-700">{order._id}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-gray-400 mb-1">DATE</p>
-                  <p className="text-sm text-gray-600">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-
-              {/* Order Items */}
-              <div className="border-t border-b py-4 mb-4 space-y-3">
-                {order.products.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.title}
-                        className="w-12 h-12 rounded-lg object-cover"
-                      />
-                    ) : (
-                      <div
-                        style={{ backgroundColor: '#D4A96A' }}
-                        className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                      >
-                        🎨
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-800">{item.title}</p>
-                      <p className="text-xs text-gray-400">Qty: {item.quantity} × ${item.price}</p>
+        {orders.length === 0 ? (
+          <div className="text-center py-20 card-flat">
+            <div className="text-6xl mb-4">📦</div>
+            <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>No orders yet</h2>
+            <p className="text-sm mb-8" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>Start shopping to see your orders here</p>
+            <Link to="/" className="btn-primary px-8 py-3 text-sm">Browse Products</Link>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {orders.map((order) => {
+              const statusStyle = STATUS_STYLES[order.orderStatus] || STATUS_STYLES.Processing;
+              return (
+                <div key={order._id} className="card p-6">
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                        Order ID
+                      </p>
+                      <p className="text-sm font-mono font-medium" style={{ color: 'var(--text-primary)' }}>
+                        {order._id}
+                      </p>
                     </div>
-                    <p className="text-sm font-semibold text-[#8B5E3C]">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span
+                        className="badge text-xs"
+                        style={{ background: statusStyle.bg, color: statusStyle.color, border: `1px solid ${statusStyle.border}` }}
+                      >
+                        {order.orderStatus}
+                      </span>
+                      <span className="badge badge-green text-xs">
+                        {order.paymentStatus}
+                      </span>
+                      <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                        {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Order Summary */}
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(order.orderStatus)}`}>
-                      {order.orderStatus}
-                    </span>
-                    <span className="text-xs px-2 py-1 rounded-full font-medium bg-green-100 text-green-700">
-                      {order.paymentStatus}
-                    </span>
+                  {/* Items */}
+                  <div className="space-y-3 mb-5" style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                    {order.products.map((item, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0" style={{ background: 'var(--cream-dark)', border: '1px solid var(--border)' }}>
+                          {item.imageUrl ? (
+                            <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">🎨</div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium line-clamp-1" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>{item.title}</p>
+                          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Qty: {item.quantity} × ${item.price}</p>
+                        </div>
+                        <span className="text-sm font-bold flex-shrink-0" style={{ color: 'var(--brown)', fontFamily: 'Playfair Display, serif' }}>
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <p className="text-xs text-gray-400">
-                    Platform fee: ${order.platformFee?.toFixed(2)}
-                  </p>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--border)' }}>
+                    <div className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                      Platform fee: ${order.platformFee?.toFixed(2)}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs mb-0.5" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>Total Paid</p>
+                      <p className="text-xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--brown)' }}>
+                        ${order.totalAmount?.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs text-gray-400">Total Paid</p>
-                  <p className="text-xl font-bold text-[#8B5E3C]">
-                    ${order.totalAmount?.toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

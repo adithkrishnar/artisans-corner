@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProductById } from '../api/productService';
 import { getProductReviews } from '../api/reviewService';
 import { addToCart } from '../features/cart/cartSlice';
@@ -13,20 +13,17 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productRes, reviewsRes] = await Promise.all([
-          getProductById(id),
-          getProductReviews(id),
-        ]);
-        setProduct(productRes.data.product);
-        setReviews(reviewsRes.data.reviews);
+        const [pRes, rRes] = await Promise.all([getProductById(id), getProductReviews(id)]);
+        setProduct(pRes.data.product);
+        setReviews(rRes.data.reviews);
       } catch (err) {
-        setError('Failed to load product');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -35,145 +32,201 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    dispatch(addToCart({
-      _id: product._id,
-      title: product.title,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      store: product.store,
-      stock: product.stock,
-      quantity,
-    }));
+    dispatch(addToCart({ _id: product._id, title: product.title, price: product.price, imageUrl: product.imageUrl, store: product.store, stock: product.stock, quantity }));
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   };
 
-  const handleReviewAdded = (newReview) => {
-    setReviews([newReview, ...reviews]);
-  };
+  const handleReviewAdded = (newReview) => setReviews([newReview, ...reviews]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-400">Loading product...</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--cream)' }}>
+        <div className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--terracotta)', borderTopColor: 'transparent' }}></div>
       </div>
     );
   }
 
-  if (error || !product) {
+  if (!product) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500">{error || 'Product not found'}</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--cream)' }}>
+        <div className="text-center">
+          <p className="text-2xl mb-4">😕</p>
+          <p style={{ color: 'var(--text-muted)' }}>Product not found</p>
+          <Link to="/" className="btn-primary mt-4 inline-block">Back to Shop</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Product Info Section */}
-      <div className="grid md:grid-cols-2 gap-10 mb-12">
-        {/* Image */}
-        <div className="rounded-2xl overflow-hidden shadow">
-          {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              className="w-full h-96 object-cover"
-            />
-          ) : (
-            <div
-              className="w-full h-96 flex items-center justify-center text-white text-6xl"
-              style={{ backgroundColor: '#D4A96A' }}
-            >
-              🎨
-            </div>
-          )}
+    <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-xs mb-8" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+          <Link to="/" className="hover:text-terracotta transition-colors">Home</Link>
+          <span>/</span>
+          <span>{product.category}</span>
+          <span>/</span>
+          <span className="line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{product.title}</span>
         </div>
 
-        {/* Details */}
-        <div className="flex flex-col justify-between">
-          <div>
-            <p className="text-sm text-gray-400 mb-2">
-              {product.store?.storeName} · {product.category}
+        {/* Main Product */}
+        <div className="grid md:grid-cols-2 gap-10 mb-14">
+          {/* Image */}
+          <div className="space-y-3">
+            <div className="rounded-3xl overflow-hidden" style={{ background: 'var(--cream-dark)', border: '1px solid var(--border)' }}>
+              {product.imageUrl ? (
+                <img src={product.imageUrl} alt={product.title} className="w-full h-96 md:h-[500px] object-cover" />
+              ) : (
+                <div className="w-full h-96 md:h-[500px] flex items-center justify-center text-8xl" style={{ background: 'linear-gradient(135deg, var(--cream-dark), var(--beige))' }}>
+                  🎨
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="flex flex-col">
+            <div className="mb-2">
+              <Link to="/" className="text-xs font-semibold uppercase tracking-wider hover:underline" style={{ color: 'var(--terracotta)', fontFamily: 'DM Sans, sans-serif' }}>
+                {product.store?.storeName}
+              </Link>
+              <span className="text-xs mx-2" style={{ color: 'var(--border-dark)' }}>·</span>
+              <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>{product.category}</span>
+            </div>
+
+            <h1 className="text-3xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)', lineHeight: '1.2' }}>
+              {product.title}
+            </h1>
+
+            {/* Rating */}
+            <div className="flex items-center gap-3 mb-5">
+              <StarRating rating={product.averageRating} size="md" />
+              <span className="text-sm font-semibold" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>
+                {product.averageRating > 0 ? product.averageRating : 'No'} rating
+              </span>
+              <span className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                ({product.totalReviews} {product.totalReviews === 1 ? 'review' : 'reviews'})
+              </span>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-center gap-3 mb-5">
+              <span className="text-4xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--brown)' }}>
+                ${product.price}
+              </span>
+              <span
+                className="badge text-xs"
+                style={{
+                  background: product.stock > 0 ? 'rgba(107,115,85,0.1)' : 'rgba(239,68,68,0.08)',
+                  color: product.stock > 0 ? 'var(--olive)' : '#dc2626',
+                  border: `1px solid ${product.stock > 0 ? 'rgba(107,115,85,0.2)' : 'rgba(239,68,68,0.15)'}`,
+                }}
+              >
+                {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+              </span>
+            </div>
+
+            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif', lineHeight: '1.8' }}>
+              {product.description}
             </p>
-            <h1 className="text-3xl font-bold text-gray-800 mb-3">{product.title}</h1>
 
-            <div className="flex items-center gap-2 mb-4">
-              <StarRating rating={product.averageRating} size="lg" />
-              <span className="text-gray-500 text-sm">
-                {product.averageRating} ({product.totalReviews} reviews)
-              </span>
-            </div>
-
-            <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
-
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-3xl font-bold text-[#8B5E3C]">${product.price}</span>
-              <span className={`text-sm px-3 py-1 rounded-full font-medium ${product.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
-                {product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
-              </span>
-            </div>
-
+            {/* Quantity */}
             {product.stock > 0 && (
               <div className="flex items-center gap-4 mb-6">
-                <label className="text-sm font-medium text-gray-700">Quantity:</label>
-                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>Quantity</span>
+                <div className="flex items-center rounded-xl overflow-hidden" style={{ border: '1.5px solid var(--border)', background: 'var(--white)' }}>
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+                    className="w-10 h-10 flex items-center justify-center text-lg font-medium transition-colors duration-200"
+                    style={{ color: 'var(--text-secondary)' }}
                   >
-                    -
+                    −
                   </button>
-                  <span className="px-4 py-2 text-sm font-medium">{quantity}</span>
+                  <span className="w-12 text-center text-sm font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>
+                    {quantity}
+                  </span>
                   <button
                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+                    className="w-10 h-10 flex items-center justify-center text-lg font-medium transition-colors duration-200"
+                    style={{ color: 'var(--text-secondary)' }}
                   >
                     +
                   </button>
                 </div>
               </div>
             )}
-          </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-            style={{ backgroundColor: product.stock > 0 ? '#8B5E3C' : '#9CA3AF' }}
-            className="w-full text-white py-3 rounded-xl font-semibold text-lg hover:opacity-90 transition disabled:cursor-not-allowed"
-          >
-            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        </div>
-      </div>
+            {/* Add to Cart */}
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+              className="btn-primary w-full py-4 text-sm mb-3 relative overflow-hidden"
+            >
+              {added ? '✓ Added to Cart!' : product.stock > 0 ? 'Add to Cart →' : 'Out of Stock'}
+            </button>
 
-      {/* Reviews Section */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Review Form */}
-        <ReviewForm productId={id} onReviewAdded={handleReviewAdded} />
-
-        {/* Reviews List */}
-        <div>
-          <h3 className="text-lg font-semibold text-[#8B5E3C] mb-4">
-            Customer Reviews ({reviews.length})
-          </h3>
-
-          {reviews.length === 0 ? (
-            <p className="text-gray-400 text-sm italic">No reviews yet. Be the first to review!</p>
-          ) : (
-            <div className="space-y-4">
-              {reviews.map((review) => (
-                <div key={review._id} className="bg-white rounded-xl shadow p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-gray-800">{review.user?.name}</span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <StarRating rating={review.rating} />
-                  <p className="text-sm text-gray-600 mt-2">{review.comment}</p>
+            {/* Features */}
+            <div className="grid grid-cols-3 gap-3 mt-5">
+              {[
+                { icon: '🚚', text: 'Free Shipping' },
+                { icon: '↩️', text: '30-Day Returns' },
+                { icon: '🔒', text: 'Secure Payment' },
+              ].map((f, i) => (
+                <div key={i} className="text-center p-3 rounded-xl" style={{ background: 'var(--cream-dark)', border: '1px solid var(--border)' }}>
+                  <div className="text-xl mb-1">{f.icon}</div>
+                  <p className="text-xs font-medium" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>{f.text}</p>
                 </div>
               ))}
             </div>
-          )}
+          </div>
+        </div>
+
+        {/* Reviews */}
+        <div className="grid md:grid-cols-2 gap-8">
+          <ReviewForm productId={id} onReviewAdded={handleReviewAdded} />
+
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
+                Customer Reviews
+              </h3>
+              <span className="badge badge-clay text-xs">{reviews.length} reviews</span>
+            </div>
+
+            {reviews.length === 0 ? (
+              <div className="text-center py-12 rounded-2xl" style={{ background: 'var(--white)', border: '1px solid var(--border)' }}>
+                <div className="text-4xl mb-3">⭐</div>
+                <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>No reviews yet</p>
+                <p className="text-xs mt-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>Be the first to review this product</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <div key={review._id} className="card p-5">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: 'linear-gradient(135deg, var(--terracotta), var(--clay))' }}>
+                          {review.user?.name?.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>{review.user?.name}</p>
+                          <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                            {new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </p>
+                        </div>
+                      </div>
+                      <StarRating rating={review.rating} />
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>
+                      {review.comment}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

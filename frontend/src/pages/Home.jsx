@@ -41,95 +41,121 @@ const Home = () => {
   };
 
   return (
-    <div style={{ background: '#0d0d0d', minHeight: '100vh' }}>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ minHeight: '85vh', display: 'flex', alignItems: 'center' }}>
-        {/* Animated background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-15 blur-3xl" style={{ background: 'radial-gradient(circle, #c8922a, transparent)', animation: 'pulse 6s ease-in-out infinite' }}></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full opacity-10 blur-3xl" style={{ background: 'radial-gradient(circle, #e8b84b, transparent)', animation: 'pulse 8s ease-in-out infinite reverse' }}></div>
-          <div className="absolute top-1/2 left-1/2 w-48 h-48 rounded-full opacity-8 blur-3xl" style={{ background: 'radial-gradient(circle, #a06820, transparent)', animation: 'pulse 10s ease-in-out infinite' }}></div>
+    <div style={{ background: 'var(--cream)' }}>
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, var(--brown) 0%, var(--brown-light) 50%, var(--clay) 100%)', minHeight: '88vh', display: 'flex', alignItems: 'center' }}>
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-10 right-10 w-96 h-96 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, var(--terracotta-light), transparent)' }}></div>
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, var(--clay-light), transparent)' }}></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full opacity-5" style={{ background: 'radial-gradient(circle, white, transparent)' }}></div>
+          {/* Grid */}
+          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
         </div>
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'linear-gradient(rgba(200,146,42,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(200,146,42,0.3) 1px, transparent 1px)', backgroundSize: '50px 50px' }}></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 py-20 w-full">
-          <div className="text-center max-w-4xl mx-auto animate-fade-up">
-            <div className="badge-gold inline-block mb-6">✦ Handcrafted Marketplace</div>
-
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-none" style={{ fontFamily: 'Cormorant Garamond, serif', color: '#f5f0e8', letterSpacing: '-0.03em' }}>
-              Discover
-              <span className="gradient-text block">Artisan</span>
-              Treasures
-            </h1>
-
-            <p className="text-lg md:text-xl mb-12 max-w-2xl mx-auto" style={{ color: '#8a8070', lineHeight: '1.8' }}>
-              A curated marketplace for unique handcrafted products from independent creators around the world.
-            </p>
-
-            {/* Search */}
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-12">
-              <div
-                className="flex gap-2 p-2 rounded-2xl"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(200,146,42,0.2)', backdropFilter: 'blur(20px)' }}
-              >
-                <div className="flex-1 flex items-center gap-3 px-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" style={{ color: '#5a5045' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  <input
-                    type="text"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Search handcrafted products..."
-                    className="flex-1 bg-transparent text-sm outline-none"
-                    style={{ color: '#f5f0e8', fontFamily: 'DM Sans, sans-serif' }}
-                  />
-                  <style>{`input::placeholder { color: #5a5045; }`}</style>
-                </div>
-                <button type="submit" className="btn-gold text-sm px-6 py-2.5">
-                  Search
-                </button>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div className="animate-fade-up">
+              <div className="badge badge-clay mb-6 inline-flex" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.15)', fontFamily: 'DM Sans, sans-serif' }}>
+                ✦ Handmade with Passion
               </div>
-            </form>
 
-            {/* Stats */}
-            <div className="flex items-center justify-center gap-12">
-              {[
-                { number: '500+', label: 'Artisans' },
-                { number: '2K+', label: 'Products' },
-                { number: '10K+', label: 'Happy Buyers' },
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <p className="text-3xl font-bold gradient-text" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{stat.number}</p>
-                  <p className="text-xs uppercase tracking-widest mt-1" style={{ color: '#5a5045' }}>{stat.label}</p>
+              <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-none" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '-0.03em' }}>
+                Discover<br />
+                <em className="not-italic" style={{ color: 'var(--terracotta-light)' }}>Unique</em><br />
+                Artisan<br />
+                Creations
+              </h1>
+
+              <p className="text-lg mb-10 max-w-md leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'DM Sans, sans-serif' }}>
+                Support independent artisans and bring home one-of-a-kind handmade products you won't find anywhere else.
+              </p>
+
+              <div className="flex flex-wrap gap-3 mb-12">
+                <Link to="/" onClick={() => { setCategory('All'); setSearchInput(''); setSearch(''); }} className="btn-primary px-8 py-3.5 text-sm">
+                  Shop Now
+                </Link>
+                <Link to="/become-seller" className="btn-ghost px-8 py-3.5 text-sm" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
+                  Become a Seller
+                </Link>
+              </div>
+
+              {/* Stats */}
+              <div className="flex gap-8">
+                {[
+                  { n: '500+', l: 'Artisans' },
+                  { n: '2K+', l: 'Products' },
+                  { n: '10K+', l: 'Happy Buyers' },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, serif' }}>{s.n}</p>
+                    <p className="text-xs mt-0.5 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'DM Sans, sans-serif' }}>{s.l}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — Search + Featured */}
+            <div className="animate-fade-up hidden lg:block" style={{ animationDelay: '0.2s' }}>
+              <div className="p-6 rounded-3xl" style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <form onSubmit={handleSearch} className="mb-6">
+                  <p className="text-xs uppercase tracking-widest mb-3 font-semibold" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'DM Sans, sans-serif' }}>
+                    Search Products
+                  </p>
+                  <div className="flex gap-2">
+                    <div className="flex-1 flex items-center gap-2 px-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.4)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      <input
+                        type="text"
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        placeholder="Handmade pottery, jewelry..."
+                        className="flex-1 bg-transparent py-3 text-sm outline-none text-white"
+                        style={{ fontFamily: 'DM Sans, sans-serif' }}
+                      />
+                    </div>
+                    <button type="submit" className="btn-primary px-5 py-3 text-sm">
+                      Search
+                    </button>
+                  </div>
+                </form>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {CATEGORIES.slice(1, 5).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => { setCategory(cat); setPage(1); window.scrollTo({ top: 600, behavior: 'smooth' }); }}
+                      className="p-3.5 rounded-xl text-left transition-all duration-200 group"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      <p className="text-sm font-medium text-white group-hover:text-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>{cat}</p>
+                      <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Browse →</p>
+                    </button>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: '#5a5045' }}>
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, #c8922a, transparent)' }}></div>
-        </div>
       </section>
 
-      {/* Features strip */}
-      <div style={{ borderTop: '1px solid rgba(200,146,42,0.1)', borderBottom: '1px solid rgba(200,146,42,0.1)', background: 'rgba(255,255,255,0.02)' }}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex flex-wrap justify-center gap-8">
+      {/* Features Strip */}
+      <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
             {[
-              { icon: '✦', text: 'Free Worldwide Shipping' },
-              { icon: '✦', text: 'Stripe Secured Payments' },
-              { icon: '✦', text: 'Verified Artisans Only' },
-              { icon: '✦', text: 'Easy 30-Day Returns' },
+              { icon: '🚚', text: 'Free Shipping on orders over $100' },
+              { icon: '🔒', text: 'Secure Stripe Payments' },
+              { icon: '✦', text: 'Verified Independent Artisans' },
+              { icon: '↩️', text: 'Easy 30-Day Returns' },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm" style={{ color: '#8a8070' }}>
-                <span style={{ color: '#c8922a' }}>{item.icon}</span>
-                {item.text}
+              <div key={i} className="flex items-center gap-2.5 text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>
+                <span className="text-base">{item.icon}</span>
+                <span className="font-medium">{item.text}</span>
               </div>
             ))}
           </div>
@@ -137,45 +163,43 @@ const Home = () => {
       </div>
 
       {/* Products Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        {/* Section Header */}
-        <div className="flex items-end justify-between mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="badge-gold inline-block mb-3">✦ Collection</div>
-            <h2 className="text-4xl font-bold" style={{ fontFamily: 'Cormorant Garamond, serif', color: '#f5f0e8' }}>
+            <p className="section-label mb-2">Our Collection</p>
+            <h2 className="section-title">
               {category === 'All' ? 'All Products' : category}
             </h2>
             {!loading && (
-              <p className="text-sm mt-1" style={{ color: '#5a5045' }}>
-                {total} {total === 1 ? 'product' : 'products'} available
+              <p className="text-sm mt-1.5" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                Showing {products.length} of {total} products
               </p>
             )}
           </div>
           {search && (
             <button
               onClick={() => { setSearch(''); setSearchInput(''); setPage(1); }}
-              className="text-sm transition-all duration-200"
-              style={{ color: '#c8922a' }}
+              className="btn-ghost text-sm self-start"
             >
-              Clear search ✕
+              Clear "{search}" ✕
             </button>
           )}
         </div>
 
-        {/* Category Pills */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-10" style={{ scrollbarWidth: 'none' }}>
+        {/* Categories */}
+        <div className="flex gap-2 overflow-x-auto pb-3 mb-8" style={{ scrollbarWidth: 'none' }}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => { setCategory(cat); setPage(1); }}
-              className="px-5 py-2 rounded-full text-xs font-semibold whitespace-nowrap flex-shrink-0 transition-all duration-300 uppercase tracking-wider"
+              className="px-5 py-2 rounded-full text-xs font-semibold whitespace-nowrap flex-shrink-0 transition-all duration-200 uppercase tracking-wide"
               style={{
-                background: category === cat
-                  ? 'linear-gradient(135deg, #c8922a, #e8b84b)'
-                  : 'rgba(255,255,255,0.04)',
-                color: category === cat ? '#0d0d0d' : '#5a5045',
-                border: category === cat ? 'none' : '1px solid rgba(200,146,42,0.15)',
-                boxShadow: category === cat ? '0 4px 15px rgba(200,146,42,0.3)' : 'none',
+                background: category === cat ? 'var(--terracotta)' : 'var(--white)',
+                color: category === cat ? 'white' : 'var(--text-secondary)',
+                border: category === cat ? '1px solid var(--terracotta)' : '1px solid var(--border)',
+                boxShadow: category === cat ? '0 4px 12px rgba(196,113,74,0.25)' : 'none',
+                fontFamily: 'DM Sans, sans-serif',
               }}
             >
               {cat}
@@ -183,73 +207,74 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Products Grid */}
+        {/* Grid */}
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden" style={{ background: '#161616', border: '1px solid rgba(200,146,42,0.1)' }}>
+              <div key={i} className="card overflow-hidden" style={{ border: '1px solid var(--border)' }}>
                 <div className="h-52 skeleton"></div>
                 <div className="p-4 space-y-3">
-                  <div className="h-2 skeleton w-1/2"></div>
-                  <div className="h-3 skeleton"></div>
+                  <div className="h-2.5 skeleton w-1/2"></div>
+                  <div className="h-3.5 skeleton"></div>
                   <div className="h-3 skeleton w-3/4"></div>
-                  <div className="h-8 skeleton rounded-xl"></div>
+                  <div className="h-9 skeleton rounded-xl mt-2"></div>
                 </div>
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-24">
-            <div className="text-6xl mb-4 opacity-30">🔍</div>
-            <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Cormorant Garamond, serif', color: '#f5f0e8' }}>
+            <div className="text-6xl mb-5">🔍</div>
+            <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
               No products found
             </h3>
-            <p className="mb-8" style={{ color: '#5a5045' }}>Try a different category or search term</p>
-            <button
-              onClick={() => { setCategory('All'); setSearch(''); setSearchInput(''); }}
-              className="btn-gold px-8 py-3"
-            >
+            <p className="mb-8 text-sm" style={{ color: 'var(--text-muted)' }}>Try a different category or search term</p>
+            <button onClick={() => { setCategory('All'); setSearch(''); setSearchInput(''); }} className="btn-primary px-8 py-3">
               View all products
             </button>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
               {products.map((product, i) => (
-                <div key={product._id} style={{ animationDelay: `${i * 0.05}s` }} className="animate-fade-up">
+                <div key={product._id} className="animate-fade-up" style={{ animationDelay: `${i * 0.04}s` }}>
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
 
+            {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-16">
+              <div className="flex justify-center items-center gap-2 mt-14">
                 <button
                   onClick={() => setPage(page - 1)}
                   disabled={page === 1}
-                  className="btn-outline px-5 py-2 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="btn-ghost px-5 py-2.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  ← Prev
+                  ← Previous
                 </button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPage(i + 1)}
-                    className="w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200"
-                    style={{
-                      background: page === i + 1 ? 'linear-gradient(135deg, #c8922a, #e8b84b)' : 'rgba(255,255,255,0.04)',
-                      color: page === i + 1 ? '#0d0d0d' : '#5a5045',
-                      border: '1px solid rgba(200,146,42,0.15)',
-                      fontWeight: page === i + 1 ? '700' : '400',
-                    }}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
+                <div className="flex gap-1">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i + 1)}
+                      className="w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200"
+                      style={{
+                        background: page === i + 1 ? 'var(--terracotta)' : 'var(--white)',
+                        color: page === i + 1 ? 'white' : 'var(--text-secondary)',
+                        border: '1px solid var(--border)',
+                        fontFamily: 'DM Sans, sans-serif',
+                        fontWeight: page === i + 1 ? '700' : '400',
+                      }}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
                 <button
                   onClick={() => setPage(page + 1)}
                   disabled={page === totalPages}
-                  className="btn-outline px-5 py-2 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="btn-ghost px-5 py-2.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Next →
                 </button>
@@ -259,18 +284,20 @@ const Home = () => {
         )}
       </div>
 
-      {/* CTA Section */}
-      <section className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(200,146,42,0.1)', marginTop: '4rem' }}>
-        <div className="absolute inset-0 opacity-5" style={{ background: 'linear-gradient(135deg, #c8922a, transparent)' }}></div>
+      {/* CTA */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, var(--brown), var(--clay))', marginTop: '2rem' }}>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
         <div className="relative max-w-7xl mx-auto px-4 py-20 text-center">
-          <div className="badge-gold inline-block mb-4">✦ For Creators</div>
-          <h2 className="text-5xl font-bold mb-4" style={{ fontFamily: 'Cormorant Garamond, serif', color: '#f5f0e8' }}>
-            Start selling your craft
+          <span className="badge badge-clay inline-flex mb-5" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            ✦ For Creators
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-5" style={{ fontFamily: 'Playfair Display, serif' }}>
+            Empowering Artisans,<br />Preserving Traditions
           </h2>
-          <p className="mb-10 max-w-xl mx-auto" style={{ color: '#8a8070' }}>
-            Join thousands of independent artisans. Set up your store in minutes and reach buyers worldwide.
+          <p className="text-base mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'DM Sans, sans-serif' }}>
+            Join our community of creators and customers who value handmade, sustainable, and meaningful products.
           </p>
-          <Link to="/become-seller" className="btn-gold px-10 py-4 text-base inline-block">
+          <Link to="/become-seller" className="btn-primary px-10 py-4 inline-block text-base">
             Open Your Store →
           </Link>
         </div>

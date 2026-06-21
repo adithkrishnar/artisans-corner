@@ -14,135 +14,159 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <div className="text-6xl mb-6">🛒</div>
-        <h2 className="text-2xl font-bold text-gray-700 mb-3">Your cart is empty</h2>
-        <p className="text-gray-400 mb-8">Discover handcrafted products from our artisans</p>
-        <Link
-          to="/"
-          style={{ backgroundColor: '#8B5E3C' }}
-          className="text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition"
-        >
-          Browse Products
-        </Link>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--cream)' }}>
+        <div className="text-center max-w-sm">
+          <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl" style={{ background: 'var(--beige)' }}>
+            🛒
+          </div>
+          <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
+            Your cart is empty
+          </h2>
+          <p className="text-sm mb-8" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+            Discover unique handcrafted products from our artisans
+          </p>
+          <Link to="/" className="btn-primary px-8 py-3 text-sm">Browse Products</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-[#8B5E3C] mb-8">Shopping Cart</h1>
-
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Cart Items */}
-        <div className="lg:col-span-2 space-y-4">
-          {items.map((item) => (
-            <div key={item._id} className="bg-white rounded-xl shadow p-5 flex gap-4">
-              {item.imageUrl ? (
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-              ) : (
-                <div
-                  style={{ backgroundColor: '#D4A96A' }}
-                  className="w-20 h-20 rounded-lg flex items-center justify-center text-white text-2xl"
-                >
-                  🎨
-                </div>
-              )}
-
-              <div className="flex-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-800">{item.title}</h3>
-                    <p className="text-sm text-gray-400">{item.store?.storeName}</p>
-                  </div>
-                  <button
-                    onClick={() => dispatch(removeFromCart(item._id))}
-                    className="text-red-400 hover:text-red-600 text-sm transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between mt-3">
-                  <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => dispatch(updateQuantity({ id: item._id, quantity: item.quantity - 1 }))}
-                      className="px-3 py-1 text-gray-600 hover:bg-gray-100 text-lg"
-                    >
-                      -
-                    </button>
-                    <span className="px-4 py-1 text-sm font-medium">{item.quantity}</span>
-                    <button
-                      onClick={() => dispatch(updateQuantity({ id: item._id, quantity: item.quantity + 1 }))}
-                      disabled={item.quantity >= item.stock}
-                      className="px-3 py-1 text-gray-600 hover:bg-gray-100 text-lg disabled:opacity-40"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <span className="font-bold text-[#8B5E3C]">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          <button
-            onClick={() => dispatch(clearCart())}
-            className="text-sm text-red-400 hover:text-red-600 transition"
-          >
-            Clear Cart
-          </button>
+    <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        {/* Header */}
+        <div className="mb-8">
+          <p className="section-label mb-1">Shopping</p>
+          <h1 className="text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
+            My Cart
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+            {items.length} {items.length === 1 ? 'item' : 'items'}
+          </p>
         </div>
 
-        {/* Order Summary */}
-        <div className="bg-white rounded-xl shadow p-6 h-fit">
-          <h2 className="text-lg font-semibold text-[#8B5E3C] mb-5">Order Summary</h2>
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Items */}
+          <div className="lg:col-span-2 space-y-3">
+            {items.map((item) => (
+              <div key={item._id} className="card p-4 flex gap-4">
+                <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0" style={{ background: 'var(--cream-dark)', border: '1px solid var(--border)' }}>
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl">🎨</div>
+                  )}
+                </div>
 
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between text-gray-600">
-              <span>Subtotal ({items.length} items)</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Platform Fee (5%)</span>
-              <span>${platformFee.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Shipping</span>
-              <span className="text-green-600">Free</span>
-            </div>
-            <div className="border-t pt-3 flex justify-between font-bold text-gray-800">
-              <span>Total</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                        {item.store?.storeName || 'Artisan Store'}
+                      </p>
+                      <h3 className="font-semibold text-sm line-clamp-1" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>
+                        {item.title}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => dispatch(removeFromCart(item._id))}
+                      className="flex-shrink-0 text-xs px-2.5 py-1 rounded-lg transition-all duration-200"
+                      style={{ color: '#dc2626', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-3">
+                    {/* Quantity */}
+                    <div className="flex items-center rounded-xl overflow-hidden" style={{ border: '1.5px solid var(--border)', background: 'var(--white)' }}>
+                      <button
+                        onClick={() => dispatch(updateQuantity({ id: item._id, quantity: item.quantity - 1 }))}
+                        className="w-8 h-8 flex items-center justify-center text-lg transition-colors duration-200 font-medium"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        −
+                      </button>
+                      <span className="w-10 text-center text-sm font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => dispatch(updateQuantity({ id: item._id, quantity: item.quantity + 1 }))}
+                        disabled={item.quantity >= item.stock}
+                        className="w-8 h-8 flex items-center justify-center text-lg transition-colors duration-200 font-medium disabled:opacity-30"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-base font-bold" style={{ color: 'var(--brown)', fontFamily: 'Playfair Display, serif' }}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <button
+              onClick={() => dispatch(clearCart())}
+              className="text-sm transition-colors duration-200"
+              style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}
+            >
+              Clear cart ✕
+            </button>
           </div>
 
-          <button
-            onClick={() => {
-              if (!user) {
-                navigate('/login');
-              } else {
-                navigate('/checkout');
-              }
-            }}
-            style={{ backgroundColor: '#8B5E3C' }}
-            className="w-full text-white py-3 rounded-xl font-semibold mt-6 hover:opacity-90 transition"
-          >
-            Proceed to Checkout
-          </button>
+          {/* Summary */}
+          <div className="lg:sticky lg:top-24 h-fit">
+            <div className="card-flat">
+              <h2 className="text-lg font-bold mb-5" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
+                Order Summary
+              </h2>
 
-          <Link
-            to="/"
-            className="block text-center text-sm text-[#8B5E3C] mt-4 hover:underline"
-          >
-            Continue Shopping
-          </Link>
+              <div className="space-y-3 text-sm mb-5">
+                <div className="flex justify-between" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>
+                  <span>Subtotal ({items.length} items)</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Sans, sans-serif' }}>
+                  <span>Platform Fee (5%)</span>
+                  <span>${platformFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between" style={{ color: 'var(--olive)', fontFamily: 'DM Sans, sans-serif' }}>
+                  <span>Shipping</span>
+                  <span>Free</span>
+                </div>
+                <div className="flex justify-between pt-3 font-bold text-base" style={{ borderTop: '1.5px solid var(--border)', color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif' }}>
+                  <span>Total</span>
+                  <span style={{ fontFamily: 'Playfair Display, serif' }}>${total.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => user ? navigate('/checkout') : navigate('/login')}
+                className="btn-primary w-full py-3.5 text-sm mb-3"
+              >
+                {user ? 'Proceed to Checkout →' : 'Sign in to Checkout →'}
+              </button>
+
+              <Link to="/" className="block text-center text-sm transition-colors duration-200" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                ← Continue Shopping
+              </Link>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-4 p-4 rounded-2xl" style={{ background: 'var(--white)', border: '1px solid var(--border)' }}>
+              {[
+                { icon: '🔒', text: 'Secured by Stripe' },
+                { icon: '↩️', text: 'Easy 30-day returns' },
+                { icon: '✦', text: 'Verified artisans' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 py-1.5 text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+                  <span>{item.icon}</span> {item.text}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
