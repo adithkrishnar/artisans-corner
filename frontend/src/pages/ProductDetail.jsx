@@ -52,9 +52,7 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-8">
-
-        {/* Breadcrumb */}
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12">
         <div className="flex items-center gap-1.5 text-xs mb-8" style={{ color: 'var(--text-muted)' }}>
           <Link to="/" className="hover:underline" style={{ color: 'var(--text-muted)' }}>Home</Link>
           <ChevronRight size={12} />
@@ -63,9 +61,7 @@ export default function ProductDetail() {
           <span className="line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{product.title}</span>
         </div>
 
-        {/* Product */}
-        <div className="grid md:grid-cols-2 gap-12 mb-16">
-          {/* Image */}
+        <div className="grid md:grid-cols-2 gap-16 lg:gap-24 mb-20">
           <div>
             <div className="card overflow-hidden" style={{ aspectRatio: '1', background: 'var(--bg-soft)' }}>
               {product.imageUrl ? (
@@ -79,7 +75,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Details */}
           <div className="flex flex-col">
             <div className="mb-3">
               <Link to="/" className="label-sm hover:underline" style={{ color: 'var(--accent)' }}>
@@ -147,7 +142,6 @@ export default function ProductDetail() {
               {added ? <><Check size={20} /> Added to Cart!</> : <><ShoppingCart size={20} /> {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}</>}
             </button>
 
-            {/* Features */}
             <div className="grid grid-cols-3 gap-3 mt-4">
               {[{ icon: Truck, text: 'Free Shipping' }, { icon: Shield, text: 'Secure Payment' }, { icon: RefreshCw, text: '30-Day Returns' }].map(({ icon: Icon, text }) => (
                 <div key={text} className="text-center p-3 rounded-xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
@@ -159,8 +153,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Reviews */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-16 lg:gap-20">
           <ReviewForm productId={id} onReviewAdded={r => setReviews([r, ...reviews])} />
           <div>
             <div className="flex items-center justify-between mb-5">

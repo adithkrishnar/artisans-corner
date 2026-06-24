@@ -31,18 +31,17 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-10">
-        <div className="mb-8">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12">
+        <div className="mb-10">
           <p className="label-sm section-eyebrow mb-1">Shopping</p>
           <h1 className="font-display text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>My Cart</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{items.length} {items.length === 1 ? 'item' : 'items'}</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Items */}
+        <div className="grid lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-3">
             {items.map(item => (
-              <div key={item._id} className="card p-5 flex gap-4">
+              <div key={item._id} className="card p-6 flex gap-6">
                 <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                   {item.imageUrl ? (
                     <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
@@ -98,11 +97,9 @@ export default function Cart() {
             </button>
           </div>
 
-          {/* Summary */}
           <div className="h-fit space-y-4 lg:sticky lg:top-24">
-            <div className="card-flat">
+            <div className="card-flat p-8">
               <h2 className="font-display text-lg font-bold mb-5" style={{ color: 'var(--text-primary)' }}>Order Summary</h2>
-
               <div className="space-y-3 text-sm mb-5">
                 {[
                   { label: `Subtotal (${items.length} items)`, value: `$${subtotal.toFixed(2)}` },
@@ -127,8 +124,7 @@ export default function Cart() {
               <Link to="/" className="btn btn-ghost btn-lg w-full justify-center">← Continue Shopping</Link>
             </div>
 
-            {/* Trust */}
-            <div className="card-flat">
+            <div className="card-flat p-8">
               {[
                 { icon: Shield, text: 'Secured by Stripe' },
                 { icon: RefreshCw, text: 'Easy 30-day returns' },

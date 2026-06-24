@@ -30,20 +30,18 @@ export default function Footer() {
         color: 'rgba(255,255,255,0.65)',
       }}
     >
-      {/* Newsletter */}
       <div
         style={{
           background: 'rgba(255,255,255,0.04)',
           borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <div className="container py-12">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-xl font-bold text-white mb-1">
                 Join our community
               </h3>
-
               <p
                 className="text-sm"
                 style={{ color: 'rgba(255,255,255,0.5)' }}
@@ -63,7 +61,6 @@ export default function Footer() {
                   color: 'white',
                 }}
               />
-
               <button className="btn btn-accent btn-sm flex items-center gap-2">
                 <Mail size={16} />
                 Subscribe
@@ -73,10 +70,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Main Footer */}
-      <div className="container py-14">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-20">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
-          {/* Brand */}
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-5">
               <div
@@ -88,12 +83,10 @@ export default function Footer() {
               >
                 AC
               </div>
-
               <span className="font-display text-xl font-bold text-white">
                 Artisan's Corner
               </span>
             </Link>
-
             <p
               className="text-sm leading-7"
               style={{
@@ -104,7 +97,6 @@ export default function Footer() {
               A premium marketplace celebrating independent artisans and the
               beauty of handcrafted products from around the world.
             </p>
-
             <p
               className="mt-6 text-sm"
               style={{ color: 'rgba(255,255,255,0.4)' }}
@@ -116,7 +108,6 @@ export default function Footer() {
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title}>
               <h4 className="text-white font-semibold mb-5">{title}</h4>
-
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
@@ -137,20 +128,18 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom */}
       <div
         style={{
           borderTop: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <div className="container py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
             className="text-xs"
             style={{ color: 'rgba(255,255,255,0.3)' }}
           >
             © 2024 Artisan's Corner. All rights reserved.
           </p>
-
           <div
             className="flex items-center gap-4 text-xs"
             style={{ color: 'rgba(255,255,255,0.3)' }}

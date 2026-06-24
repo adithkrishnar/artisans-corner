@@ -24,14 +24,14 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--bg)' }}>
+    <div className="min-h-screen flex items-center justify-center p-12 lg:p-16" style={{ background: 'var(--bg)' }}>
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle, var(--border), transparent)' }}></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle, var(--border), transparent)' }}></div>
       </div>
 
       <div className="w-full max-w-md relative animate-fade-up">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold"
               style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}>AC</div>
@@ -42,7 +42,7 @@ export default function Register() {
           <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>Start your journey in the handcrafted marketplace</p>
         </div>
 
-        <div className="card-flat">
+        <div className="card-flat p-8">
           {(error || localError) && (
             <div className="flex items-center gap-2.5 p-4 rounded-xl mb-5 text-sm animate-scale-in"
               style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.15)', color: '#dc2626' }}>
@@ -50,7 +50,7 @@ export default function Register() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {[{ label: 'Full Name', name: 'name', type: 'text', placeholder: 'John Doe' },
               { label: 'Email Address', name: 'email', type: 'email', placeholder: 'you@example.com' }].map(f => (
               <div key={f.name}>

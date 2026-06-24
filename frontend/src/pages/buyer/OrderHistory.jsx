@@ -26,15 +26,15 @@ export default function OrderHistory() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-10" style={{ maxWidth: '800px' }}>
-        <div className="mb-8">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12" style={{ maxWidth: '900px' }}>
+        <div className="mb-10">
           <p className="label-sm section-eyebrow mb-1">Account</p>
           <h1 className="font-display text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>My Orders</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{orders.length} {orders.length === 1 ? 'order' : 'orders'} placed</p>
         </div>
 
         {orders.length === 0 ? (
-          <div className="text-center py-20 card-flat">
+          <div className="text-center py-20 card-flat p-8">
             <Package size={48} className="mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
             <h2 className="font-display text-2xl font-bold mb-2">No orders yet</h2>
             <p className="text-sm mb-8" style={{ color: 'var(--text-muted)' }}>Start shopping to see your orders here</p>
@@ -43,7 +43,7 @@ export default function OrderHistory() {
         ) : (
           <div className="space-y-4">
             {orders.map(order => (
-              <div key={order._id} className="card p-6">
+              <div key={order._id} className="card p-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                   <div>
                     <p className="label-xs mb-1" style={{ color: 'var(--text-muted)' }}>Order ID</p>

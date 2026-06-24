@@ -4,7 +4,6 @@ import { Search, ArrowRight, Star, Shield, RefreshCw, Truck, Sparkles } from 'lu
 import { getAllProducts } from '../api/productService';
 import ProductCard from '../components/product/ProductCard';
 
-// Reordered to match the image: All, then Home Decor, Clothing, Pottery, Candles, Jewelry, Art, Woodwork, Textiles, then extras
 const CATEGORIES = [
   { name: 'All', icon: '✦' },
   { name: 'Home Decor', icon: '🏡' },
@@ -65,8 +64,6 @@ export default function Home() {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-
-      {/* ===== HERO ===== */}
       <section
         className="relative overflow-hidden"
         style={{
@@ -74,23 +71,23 @@ export default function Home() {
           padding: '6rem 0 5rem',
         }}
       >
-        {/* Background textures - unchanged */}
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(196,122,74,0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(122,82,48,0.4) 0%, transparent 50%), radial-gradient(circle at 60% 80%, rgba(196,122,74,0.2) 0%, transparent 40%)' }}></div>
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '80px 80px' }}></div>
 
-        <div className="container mx-auto px-4 md:px-6 relative">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-            {/* Left content */}
-            <div className="space-y-6 md:space-y-8">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 relative">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <div className="space-y-8 md:space-y-10">
               <div className="badge badge-accent inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase" style={{ background: 'rgba(196,122,74,0.2)', border: '1px solid rgba(196,122,74,0.3)', color: '#F0A870' }}>
                 <Sparkles size={14} /> Handmade with Passion
               </div>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
-                Discover<br />
-                <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Unique</span><br />
-                Artisan<br />
+                Discover  
+
+                <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Unique</span>  
+
+                Artisan  
+
                 Creations
               </h1>
 
@@ -98,7 +95,6 @@ export default function Home() {
                 Support independent artisans and bring home one-of-a-kind handmade products you won't find anywhere else.
               </p>
 
-              {/* Search form */}
               <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 max-w-md w-full">
                 <div className="flex-1 flex items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 focus-within:border-accent/50 transition-colors">
                   <Search size={18} className="text-white/40 flex-shrink-0" />
@@ -115,8 +111,7 @@ export default function Home() {
                 </button>
               </form>
 
-              {/* CTA Buttons - added mt-4 for spacing from search */}
-              <div className="flex flex-wrap items-center gap-3 mt-4">
+              <div className="flex flex-wrap items-center gap-4 mt-8">
                 <button
                   onClick={() => { setCategory('All'); setSearch(''); setSearchInput(''); window.scrollTo({ top: 600, behavior: 'smooth' }); }}
                   className="btn btn-accent px-8 py-3 rounded-xl text-base font-semibold inline-flex items-center gap-2"
@@ -132,7 +127,6 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Stats */}
               <div className="flex flex-wrap gap-8 pt-4">
                 {[{ n: '500+', l: 'Artisans' }, { n: '2,000+', l: 'Products' }, { n: '10K+', l: 'Happy Buyers' }].map(s => (
                   <div key={s.l}>
@@ -143,11 +137,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right - Category cards - improved to fit properly */}
             <div className="hidden lg:block">
               <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10">
                 <p className="text-xs uppercase tracking-wider text-white/40 mb-4">Browse Categories</p>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   {CATEGORIES.slice(1, 9).map(cat => (
                     <button
                       key={cat.name}
@@ -164,15 +157,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom wave */}
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '60px' }}>
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="none">
-            <path d="M0 60V30C360 0 720 60 1440 30V60H0Z" fill="var(--bg)" />
+            <path d="M0 60V30C360 0 720 60 1440 30V60H0Z" fill="var(--bg )" />
           </svg>
         </div>
       </section>
 
-      {/* ===== FEATURES STRIP ===== */}
       <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
@@ -191,9 +182,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ===== PRODUCTS ===== */}
-      <section className="container mx-auto px-4 md:px-6 py-12 md:py-16 lg:py-20">
-        {/* Header */}
+      <section className="container mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-20 lg:py-24">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-1.5">Our Collection</p>
@@ -212,7 +201,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Category Pills */}
         <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
           {CATEGORIES.map(cat => (
             <button
@@ -237,9 +225,8 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Product Grid */}
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-10">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="card bg-surface rounded-xl overflow-hidden shadow-sm">
                 <div className="skeleton w-full h-56 bg-gray-200 dark:bg-gray-700"></div>
@@ -263,7 +250,7 @@ export default function Home() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-10">
               {products.map((product, i) => (
                 <div key={product._id} className="animate-fade-up" style={{ animationDelay: `${i * 0.04}s`, opacity: 0 }}>
                   <ProductCard product={product} />
@@ -271,7 +258,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-3 mt-14">
                 <button
@@ -315,30 +301,6 @@ export default function Home() {
             )}
           </>
         )}
-      </section>
-
-      {/* ===== CTA ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--text-primary), #3D2A1A)' }}
-      >
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, rgba(196,122,74,0.5) 0%, transparent 60%)' }}></div>
-        <div className="container mx-auto px-4 md:px-6 py-16 md:py-20 lg:py-24 relative text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-4">For Creators</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Empowering Artisans,<br />
-            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Preserving Traditions</span>
-          </h2>
-          <p className="text-base md:text-lg text-white/60 max-w-lg mx-auto mt-4 mb-10 leading-relaxed">
-            Join our community of creators and customers who value handmade, sustainable, and meaningful products.
-          </p>
-          <Link
-            to="/become-seller"
-            className="btn btn-accent px-10 py-4 rounded-xl text-base font-semibold inline-flex items-center gap-2 shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-shadow"
-          >
-            Open Your Store <ArrowRight size={20} />
-          </Link>
-        </div>
       </section>
     </div>
   );

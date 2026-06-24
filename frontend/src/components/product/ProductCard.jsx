@@ -19,7 +19,6 @@ export default function ProductCard({ product }) {
   return (
     <Link to={`/product/${product._id}`} className="block group">
       <div className="card card-hover h-full flex flex-col">
-        {/* Image */}
         <div className="relative overflow-hidden flex-shrink-0" style={{ height: '220px', background: 'var(--bg)' }}>
           {product.imageUrl ? (
             <img src={product.imageUrl} alt={product.title}
@@ -34,7 +33,6 @@ export default function ProductCard({ product }) {
             </div>
           )}
 
-          {/* Overlay actions */}
           <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
             style={{ background: 'linear-gradient(to top, rgba(47,36,30,0.5), transparent)' }}>
             <button onClick={handleAddToCart} disabled={product.stock === 0}
@@ -45,14 +43,12 @@ export default function ProductCard({ product }) {
             </button>
           </div>
 
-          {/* Wishlist */}
           <button onClick={e => { e.preventDefault(); e.stopPropagation(); }}
             className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200"
             style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)', border: '1px solid var(--border)' }}>
             <Heart size={14} style={{ color: 'var(--primary)' }} />
           </button>
 
-          {/* Badges */}
           {product.stock === 0 && (
             <div className="absolute inset-0 flex items-center justify-center"
               style={{ background: 'rgba(248,245,241,0.85)', backdropFilter: 'blur(4px)' }}>
@@ -66,12 +62,11 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        {/* Content */}
-        <div className="card-body flex flex-col flex-1" style={{ paddingTop: '1rem' }}>
+        <div className="card-body flex flex-col flex-1 p-6">
           <p className="label-xs mb-1.5 line-clamp-1" style={{ color: 'var(--text-muted)' }}>
             {product.store?.storeName || 'Artisan Store'}
           </p>
-          <h3 className="text-sm font-semibold mb-2 line-clamp-2 flex-1" style={{ color: 'var(--text-primary)', lineHeight: '1.4', fontFamily: 'DM Sans, sans-serif' }}>
+          <h3 className="text-base font-semibold mb-3 line-clamp-2 flex-1" style={{ color: 'var(--text-primary)', lineHeight: '1.4', fontFamily: 'DM Sans, sans-serif' }}>
             {product.title}
           </h3>
 
@@ -80,7 +75,7 @@ export default function ProductCard({ product }) {
             <span className="text-xs" style={{ color: 'var(--text-muted)' }}>({product.totalReviews})</span>
           </div>
 
-          <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
+          <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
             <span className="font-display text-xl font-bold" style={{ color: 'var(--primary)' }}>
               ${product.price}
             </span>

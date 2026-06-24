@@ -37,9 +37,9 @@ export default function AddProduct() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-8" style={{ maxWidth: '860px' }}>
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12" style={{ maxWidth: '960px' }}>
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-10">
           <button onClick={() => navigate('/dashboard/seller')}
             className="btn btn-ghost btn-sm" style={{ padding: '0.5rem' }}>
             <ArrowLeft size={18} />
@@ -50,7 +50,7 @@ export default function AddProduct() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid md:grid-cols-5 gap-10">
           {/* Image Upload */}
           <div className="md:col-span-2 space-y-3">
             <div
@@ -76,7 +76,7 @@ export default function AddProduct() {
           </div>
 
           {/* Form */}
-          <div className="md:col-span-3 card-flat">
+          <div className="md:col-span-3 card-flat p-8">
             {error && (
               <div className="flex items-center gap-2 p-4 rounded-xl mb-5 text-sm"
                 style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.15)', color: '#dc2626' }}>
@@ -84,7 +84,7 @@ export default function AddProduct() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="form-label">Product Title *</label>
                 <input type="text" name="title" value={formData.title} onChange={handleChange}

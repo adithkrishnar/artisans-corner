@@ -12,9 +12,9 @@ export default function OrderSuccess() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--bg)' }}>
+    <div className="min-h-screen flex items-center justify-center p-12 lg:p-16" style={{ background: 'var(--bg)' }}>
       <div className="w-full max-w-md animate-fade-up">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6"
             style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
             <CheckCircle size={48} style={{ color: '#059669' }} />
@@ -26,7 +26,7 @@ export default function OrderSuccess() {
         </div>
 
         {order && (
-          <div className="card-flat mb-6">
+          <div className="card-flat p-8 mb-8">
             <p className="label-sm section-eyebrow mb-4">Order Summary</p>
             <div className="space-y-3">
               {[

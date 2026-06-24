@@ -18,7 +18,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex" style={{ background: 'var(--bg)' }}>
-      {/* Left Panel */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-14 relative overflow-hidden"
         style={{ background: 'linear-gradient(160deg, var(--text-primary) 0%, #3D2A1A 50%, #5C3D22 100%)' }}>
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 30% 60%, rgba(196,122,74,0.5) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(122,82,48,0.4) 0%, transparent 50%)' }}></div>
@@ -36,7 +35,8 @@ export default function Login() {
             <Sparkles size={10} /> Premium Marketplace
           </div>
           <h2 className="font-display text-5xl font-bold text-white mb-5" style={{ lineHeight: '1.1' }}>
-            Where craft<br />
+            Where craft  
+
             <em className="not-italic" style={{ color: 'var(--accent)' }}>meets commerce</em>
           </h2>
           <p className="text-base leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.55)', maxWidth: '340px' }}>
@@ -54,8 +54,7 @@ export default function Login() {
         <p className="text-xs relative z-10" style={{ color: 'rgba(255,255,255,0.2)' }}>© 2024 Artisan's Corner</p>
       </div>
 
-      {/* Right Panel */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-16">
         <div className="w-full max-w-md animate-fade-up">
           <div className="mb-8">
             <p className="label-sm section-eyebrow mb-2">Welcome back</p>
@@ -70,7 +69,7 @@ export default function Login() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="form-label">Email address</label>
               <input type="email" name="email" value={formData.email} onChange={handleChange}
@@ -98,8 +97,7 @@ export default function Login() {
             <Link to="/register" className="font-semibold" style={{ color: 'var(--primary)' }}>Create one free</Link>
           </p>
 
-          {/* Demo */}
-          <div className="mt-8 p-4 rounded-2xl" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
+          <div className="mt-12 p-6 rounded-2xl" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
             <p className="label-xs section-eyebrow mb-3">✦ Demo Credentials</p>
             <div className="space-y-2">
               {[{ role: 'Buyer', email: 'buyer@demo.com', pass: 'demo123' }, { role: 'Vendor', email: 'vendor@demo.com', pass: 'demo123' }].map(d => (

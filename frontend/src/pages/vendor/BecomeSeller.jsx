@@ -21,7 +21,6 @@ export default function BecomeSeller() {
   const [error, setError] = useState('');
 
   const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
   const handleLogoChange = e => {
     const file = e.target.files[0];
     if (file) { setLogo(file); setLogoPreview(URL.createObjectURL(file)); }
@@ -46,10 +45,8 @@ export default function BecomeSeller() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-14">
-        <div className="grid lg:grid-cols-2 gap-14 items-start">
-
-          {/* Left */}
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-16">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="lg:sticky lg:top-24">
             <p className="label-sm section-eyebrow mb-3">Become a Seller</p>
             <h1 className="font-display text-4xl font-bold mb-5" style={{ color: 'var(--text-primary)', lineHeight: '1.15' }}>
@@ -81,8 +78,7 @@ export default function BecomeSeller() {
             </div>
           </div>
 
-          {/* Right */}
-          <div className="card-flat">
+          <div className="card-flat p-10">
             <h2 className="font-display text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>
               Store Details
             </h2>
@@ -94,7 +90,7 @@ export default function BecomeSeller() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="form-label">Store Name *</label>
                 <input type="text" name="storeName" value={formData.storeName} onChange={handleChange}

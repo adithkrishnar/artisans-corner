@@ -47,10 +47,8 @@ export default function VendorDashboard() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-8">
-
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="container mx-auto px-6 md:px-12 py-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
           <div>
             <p className="label-sm section-eyebrow mb-1">Vendor Dashboard</p>
             <h1 className="font-display text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
@@ -63,8 +61,7 @@ export default function VendorDashboard() {
           </Link>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((s, i) => (
             <div key={i} className="stat-card animate-fade-up" style={{ animationDelay: `${i * 0.08}s`, opacity: 0 }}>
               <div className="flex items-start justify-between mb-3">
@@ -80,9 +77,8 @@ export default function VendorDashboard() {
           ))}
         </div>
 
-        {/* Chart */}
         {analytics?.chartData?.length > 0 && (
-          <div className="card-flat mb-8">
+          <div className="card-flat mb-12 p-8">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <p className="label-sm section-eyebrow mb-1">Analytics</p>
@@ -111,8 +107,7 @@ export default function VendorDashboard() {
           </div>
         )}
 
-        {/* Products Table */}
-        <div className="card-flat">
+        <div className="card-flat p-8">
           <div className="flex items-center justify-between mb-6">
             <div>
               <p className="label-sm section-eyebrow mb-1">Inventory</p>

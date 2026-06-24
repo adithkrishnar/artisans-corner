@@ -53,8 +53,8 @@ export default function EditProduct() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-8" style={{ maxWidth: '860px' }}>
-        <div className="flex items-center gap-4 mb-8">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12" style={{ maxWidth: '960px' }}>
+        <div className="flex items-center gap-4 mb-10">
           <button onClick={() => navigate('/dashboard/seller')} className="btn btn-ghost btn-sm" style={{ padding: '0.5rem' }}>
             <ArrowLeft size={18} />
           </button>
@@ -64,7 +64,7 @@ export default function EditProduct() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid md:grid-cols-5 gap-10">
           <div className="md:col-span-2">
             <div className="upload-zone overflow-hidden"
               style={{ aspectRatio: '1', border: imagePreview ? 'none' : undefined, borderRadius: 'var(--radius-xl)', cursor: 'pointer' }}
@@ -81,14 +81,14 @@ export default function EditProduct() {
             </div>
           </div>
 
-          <div className="md:col-span-3 card-flat">
+          <div className="md:col-span-3 card-flat p-8">
             {error && (
               <div className="flex items-center gap-2 p-4 rounded-xl mb-5 text-sm"
                 style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.15)', color: '#dc2626' }}>
                 ⚠ {error}
               </div>
             )}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="form-label">Product Title *</label>
                 <input type="text" name="title" value={formData.title} onChange={handleChange} required className="input" />

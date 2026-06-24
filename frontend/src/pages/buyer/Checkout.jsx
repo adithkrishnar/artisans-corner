@@ -21,14 +21,14 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="container py-10" style={{ maxWidth: '1000px' }}>
-        <div className="mb-8">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-12" style={{ maxWidth: '1100px' }}>
+        <div className="mb-10">
           <p className="label-sm section-eyebrow mb-1">Purchase</p>
           <h1 className="font-display text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>Checkout</h1>
         </div>
 
         {/* Steps */}
-        <div className="flex items-center mb-10">
+        <div className="flex items-center mb-14">
           {STEPS.map((label, i) => (
             <div key={i} className="flex items-center flex-1">
               <div className="flex flex-col items-center">
@@ -55,7 +55,7 @@ export default function Checkout() {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             {step === 0 && (
-              <div className="card-flat">
+              <div className="card-flat p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: 'var(--primary)' }}>1</div>
                   <h2 className="font-display text-lg font-bold" style={{ color: 'var(--text-primary)' }}>Review Cart</h2>
@@ -85,7 +85,7 @@ export default function Checkout() {
 
           {/* Summary */}
           <div className="h-fit lg:sticky lg:top-24 space-y-4">
-            <div className="card-flat">
+            <div className="card-flat p-8">
               <h3 className="font-semibold mb-5" style={{ color: 'var(--text-primary)' }}>Order Summary</h3>
               <div className="space-y-3 text-sm">
                 {[
@@ -104,7 +104,7 @@ export default function Checkout() {
                 </div>
               </div>
             </div>
-            <div className="card-flat space-y-3">
+            <div className="card-flat p-8 space-y-3">
               {[{ icon: '🔒', text: 'Secured by Stripe' }, { icon: '✦', text: 'Verified artisans' }, { icon: '↩️', text: '30-day returns' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
                   <span>{item.icon}</span> {item.text}

@@ -43,7 +43,6 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => { dispatch(logout()); navigate('/login'); };
-
   const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
 
   return (
@@ -52,10 +51,8 @@ export default function Navbar() {
         className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'nav-glass shadow-sm' : 'bg-transparent'}`}
         style={{ borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent' }}
       >
-        <div className="container">
-          <div className="flex items-center justify-between h-16 gap-4">
-
-            {/* Logo */}
+        <div className="container mx-auto px-6 md:px-12 lg:px-16">
+          <div className="flex items-center justify-between h-20 gap-8">
             <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold transition-transform duration-200 group-hover:scale-105"
                 style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}>
@@ -66,7 +63,6 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
               <Link to="/"
                 className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
@@ -74,7 +70,6 @@ export default function Navbar() {
                 Home
               </Link>
 
-              {/* Categories Dropdown */}
               <div className="relative" ref={categoriesRef}>
                 <button
                   onClick={() => setCategoriesOpen(!categoriesOpen)}
@@ -114,7 +109,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Right Actions */}
             <div className="hidden md:flex items-center gap-2">
               {user ? (
                 <>
@@ -181,7 +175,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Mobile */}
             <div className="md:hidden flex items-center gap-2">
               {user && (
                 <Link to="/cart" className="relative p-2 rounded-lg" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
@@ -203,7 +196,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden animate-slide-down" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)' }}>
             <div className="container py-4 space-y-1">
