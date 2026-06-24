@@ -1,11 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-  Instagram,
-  Twitter,
-  Facebook,
-  Globe,
-  Mail,
-} from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 const FOOTER_LINKS = {
   Marketplace: [
@@ -49,6 +43,7 @@ export default function Footer() {
               <h3 className="text-xl font-bold text-white mb-1">
                 Join our community
               </h3>
+
               <p
                 className="text-sm"
                 style={{ color: 'rgba(255,255,255,0.5)' }}
@@ -69,8 +64,8 @@ export default function Footer() {
                 }}
               />
 
-              <button className="btn btn-accent btn-sm flex-shrink-0">
-                <Mail size={16} className="inline mr-2" />
+              <button className="btn btn-accent btn-sm flex items-center gap-2">
+                <Mail size={16} />
                 Subscribe
               </button>
             </div>
@@ -82,10 +77,10 @@ export default function Footer() {
       <div className="container py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
           {/* Brand */}
-          <div className="col-span-2 lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2.5 mb-5 group">
+          <div className="col-span-2">
+            <Link to="/" className="flex items-center gap-3 mb-5">
               <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-sm font-bold"
+                className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
                 style={{
                   background:
                     'linear-gradient(135deg, var(--primary), var(--accent))',
@@ -94,79 +89,42 @@ export default function Footer() {
                 AC
               </div>
 
-              <span className="font-display text-lg font-bold text-white">
+              <span className="font-display text-xl font-bold text-white">
                 Artisan's Corner
               </span>
             </Link>
 
             <p
-              className="text-sm leading-relaxed mb-6"
+              className="text-sm leading-7"
               style={{
                 color: 'rgba(255,255,255,0.45)',
-                maxWidth: '260px',
+                maxWidth: '280px',
               }}
             >
               A premium marketplace celebrating independent artisans and the
-              beauty of handcrafted goods from around the world.
+              beauty of handcrafted products from around the world.
             </p>
 
-            <div className="flex gap-3">
-              {[
-                { Icon: Instagram, label: 'Instagram' },
-                { Icon: Twitter, label: 'Twitter' },
-                { Icon: Facebook, label: 'Facebook' },
-                { Icon: Globe, label: 'Website' },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200"
-                  style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    color: 'rgba(255,255,255,0.5)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background =
-                      'rgba(196,122,74,0.2)';
-                    e.currentTarget.style.color = 'var(--accent)';
-                    e.currentTarget.style.borderColor =
-                      'rgba(196,122,74,0.3)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background =
-                      'rgba(255,255,255,0.08)';
-                    e.currentTarget.style.color =
-                      'rgba(255,255,255,0.5)';
-                    e.currentTarget.style.borderColor =
-                      'rgba(255,255,255,0.1)';
-                  }}
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
-            </div>
+            <p
+              className="mt-6 text-sm"
+              style={{ color: 'rgba(255,255,255,0.4)' }}
+            >
+              Crafted with ❤️ for artisans worldwide.
+            </p>
           </div>
 
-          {/* Links */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title}>
-              <h4 className="label-sm text-white mb-5">{title}</h4>
+              <h4 className="text-white font-semibold mb-5">{title}</h4>
 
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       to={link.to}
-                      className="text-sm transition-colors duration-200"
-                      style={{ color: 'rgba(255,255,255,0.45)' }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = 'white';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color =
-                          'rgba(255,255,255,0.45)';
+                      className="text-sm transition-colors duration-200 hover:text-white"
+                      style={{
+                        color: 'rgba(255,255,255,0.45)',
                       }}
                     >
                       {link.label}
@@ -197,21 +155,11 @@ export default function Footer() {
             className="flex items-center gap-4 text-xs"
             style={{ color: 'rgba(255,255,255,0.3)' }}
           >
-            <span className="flex items-center gap-1.5">
-              🔒 Secured by Stripe
-            </span>
-
+            <span>🔒 Secured by Stripe</span>
             <span>•</span>
-
-            <span className="flex items-center gap-1.5">
-              ☁️ Cloudinary CDN
-            </span>
-
+            <span>☁️ Cloudinary CDN</span>
             <span>•</span>
-
-            <span className="flex items-center gap-1.5">
-              ⚡ Built with React
-            </span>
+            <span>⚡ Built with React</span>
           </div>
         </div>
       </div>
