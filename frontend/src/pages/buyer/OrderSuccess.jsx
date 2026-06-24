@@ -1,85 +1,65 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import API from '../../api/axios';
 
-const OrderSuccess = () => {
+export default function OrderSuccess() {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
     sessionStorage.removeItem('orderComplete');
-    const fetchLatestOrder = async () => {
-      try {
-        const res = await API.get('/orders/my-orders');
-        if (res.data.orders.length > 0) setOrder(res.data.orders[0]);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchLatestOrder();
+    API.get('/orders/my-orders').then(res => { if (res.data.orders.length > 0) setOrder(res.data.orders[0]); }).catch(console.error);
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--cream)' }}>
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--bg)' }}>
       <div className="w-full max-w-md animate-fade-up">
-        {/* Success Icon */}
         <div className="text-center mb-8">
-          <div
-            className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl"
-            style={{ background: 'linear-gradient(135deg, rgba(196,113,74,0.1), rgba(139,107,82,0.1))', border: '2px solid rgba(196,113,74,0.2)' }}
-          >
-            ✅
+          <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+            <CheckCircle size={48} style={{ color: '#059669' }} />
           </div>
-          <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--text-primary)' }}>
-            Order Placed!
-          </h1>
-          <p className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
-            Thank you for your purchase. Your order has been received.
+          <h1 className="font-display text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Order Placed!</h1>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+            Thank you for your purchase. Your order has been received and is being processed.
           </p>
         </div>
 
-        {/* Order Details */}
         {order && (
           <div className="card-flat mb-6">
-            <p className="section-label mb-4">Order Summary</p>
+            <p className="label-sm section-eyebrow mb-4">Order Summary</p>
             <div className="space-y-3">
               {[
-                { label: 'Order ID', value: order._id, mono: true },
-                { label: 'Total Paid', value: `$${order.totalAmount?.toFixed(2)}`, bold: true },
-                { label: 'Platform Fee (5%)', value: `$${order.platformFee?.toFixed(2)}` },
-                { label: 'Vendor Payout', value: `$${order.vendorPayout?.toFixed(2)}`, green: true },
+                { l: 'Order ID', v: order._id, mono: true },
+                { l: 'Total Paid', v: `$${order.totalAmount?.toFixed(2)}`, bold: true },
+                { l: 'Platform Fee (5%)', v: `$${order.platformFee?.toFixed(2)}` },
+                { l: 'Vendor Payout', v: `$${order.vendorPayout?.toFixed(2)}`, green: true },
               ].map((row, i) => (
                 <div key={i} className="flex items-center justify-between py-2" style={{ borderBottom: i < 3 ? '1px solid var(--border)' : 'none' }}>
-                  <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>{row.label}</span>
-                  <span
-                    className={`text-sm ${row.mono ? 'font-mono' : ''} ${row.bold ? 'font-bold text-base' : 'font-medium'}`}
-                    style={{
-                      color: row.green ? 'var(--olive)' : row.bold ? 'var(--brown)' : 'var(--text-primary)',
-                      fontFamily: row.bold ? 'Playfair Display, serif' : 'DM Sans, sans-serif',
-                    }}
-                  >
-                    {row.value}
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{row.l}</span>
+                  <span className={`text-sm ${row.mono ? 'font-mono text-xs' : ''}`}
+                    style={{ color: row.green ? '#059669' : row.bold ? 'var(--primary)' : 'var(--text-primary)', fontWeight: row.bold ? '700' : '500', fontFamily: row.bold ? 'Playfair Display, serif' : 'DM Sans, sans-serif' }}>
+                    {row.v}
                   </span>
                 </div>
               ))}
               <div className="flex items-center justify-between pt-1">
-                <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>Status</span>
-                <span className="badge badge-terracotta text-xs">{order.orderStatus}</span>
+                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Status</span>
+                <span className="badge badge-blue">{order.orderStatus}</span>
               </div>
             </div>
           </div>
         )}
 
         <div className="space-y-3">
-          <Link to="/" className="btn-primary w-full py-3.5 text-sm block text-center">
-            Continue Shopping
+          <Link to="/" className="btn btn-primary btn-lg w-full justify-center">
+            Continue Shopping <ArrowRight size={18} />
           </Link>
-          <Link to="/orders" className="btn-ghost w-full py-3.5 text-sm block text-center">
-            View All Orders
+          <Link to="/orders" className="btn btn-ghost btn-lg w-full justify-center">
+            <Package size={18} /> View All Orders
           </Link>
         </div>
       </div>
     </div>
   );
-};
-
-export default OrderSuccess;
+}

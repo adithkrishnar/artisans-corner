@@ -1,110 +1,102 @@
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { addToCart } from '../../features/cart/cartSlice';
 import StarRating from './StarRating';
 
-const ProductCard = ({ product }) => {
+export default function ProductCard({ product }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(addToCart({
-      _id: product._id,
-      title: product.title,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      store: product.store,
-      stock: product.stock,
+      _id: product._id, title: product.title, price: product.price,
+      imageUrl: product.imageUrl, store: product.store, stock: product.stock,
     }));
   };
 
   return (
     <Link to={`/product/${product._id}`} className="block group">
-      <div className="card">
+      <div className="card card-hover h-full flex flex-col">
         {/* Image */}
-        <div className="relative overflow-hidden" style={{ height: '220px', background: 'var(--cream-dark)' }}>
+        <div className="relative overflow-hidden flex-shrink-0" style={{ height: '220px', background: 'var(--bg)' }}>
           {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
-              style={{ transform: 'scale(1)', transition: 'transform 0.7s ease' }}
-              onMouseEnter={e => e.target.style.transform = 'scale(1.08)'}
-              onMouseLeave={e => e.target.style.transform = 'scale(1)'}
-            />
+            <img src={product.imageUrl} alt={product.title}
+              className="w-full h-full object-cover transition-transform duration-700"
+              style={{ transform: 'scale(1)' }}
+              onMouseEnter={e => e.target.style.transform = 'scale(1.07)'}
+              onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-5xl" style={{ background: 'linear-gradient(135deg, var(--cream-dark), var(--beige))' }}>
+            <div className="w-full h-full flex items-center justify-center text-5xl"
+              style={{ background: 'linear-gradient(135deg, var(--bg), var(--border))' }}>
               🎨
             </div>
           )}
 
-          {/* Wishlist button */}
-          <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
-            style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)', border: '1px solid var(--border)' }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--terracotta)' }}>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
+          {/* Overlay actions */}
+          <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
+            style={{ background: 'linear-gradient(to top, rgba(47,36,30,0.5), transparent)' }}>
+            <button onClick={handleAddToCart} disabled={product.stock === 0}
+              className="btn btn-sm flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+              style={{ background: product.stock > 0 ? 'var(--primary)' : 'rgba(255,255,255,0.4)', color: 'white', borderColor: 'transparent', backdropFilter: 'blur(10px)' }}>
+              <ShoppingCart size={14} />
+              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+          </div>
+
+          {/* Wishlist */}
+          <button onClick={e => { e.preventDefault(); e.stopPropagation(); }}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200"
+            style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)', border: '1px solid var(--border)' }}>
+            <Heart size={14} style={{ color: 'var(--primary)' }} />
           </button>
 
+          {/* Badges */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(250,247,242,0.85)', backdropFilter: 'blur(4px)' }}>
-              <span className="badge badge-clay text-xs">Out of Stock</span>
+            <div className="absolute inset-0 flex items-center justify-center"
+              style={{ background: 'rgba(248,245,241,0.85)', backdropFilter: 'blur(4px)' }}>
+              <span className="badge badge-muted">Out of Stock</span>
             </div>
           )}
-
           {product.stock > 0 && product.stock <= 5 && (
             <div className="absolute top-3 left-3">
-              <span className="badge badge-terracotta text-xs">Only {product.stock} left</span>
+              <span className="badge badge-orange">Only {product.stock} left</span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1.5 line-clamp-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
+        <div className="card-body flex flex-col flex-1" style={{ paddingTop: '1rem' }}>
+          <p className="label-xs mb-1.5 line-clamp-1" style={{ color: 'var(--text-muted)' }}>
             {product.store?.storeName || 'Artisan Store'}
           </p>
-          <h3 className="font-semibold text-sm mb-2 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif', lineHeight: '1.4' }}>
+          <h3 className="text-sm font-semibold mb-2 line-clamp-2 flex-1" style={{ color: 'var(--text-primary)', lineHeight: '1.4', fontFamily: 'DM Sans, sans-serif' }}>
             {product.title}
           </h3>
 
           <div className="flex items-center gap-1.5 mb-3">
             <StarRating rating={product.averageRating} />
-            <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Sans, sans-serif' }}>
-              {product.averageRating > 0 ? `${product.averageRating}` : '—'} ({product.totalReviews})
-            </span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>({product.totalReviews})</span>
           </div>
 
-          <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-            <div>
-              <span className="text-xl font-bold" style={{ color: 'var(--brown)', fontFamily: 'Playfair Display, serif' }}>
-                ${product.price}
-              </span>
-            </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+          <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
+            <span className="font-display text-xl font-bold" style={{ color: 'var(--primary)' }}>
+              ${product.price}
+            </span>
+            <button onClick={handleAddToCart} disabled={product.stock === 0}
+              className="btn btn-sm"
               style={{
-                background: product.stock > 0 ? 'var(--terracotta)' : 'var(--beige)',
-                color: product.stock > 0 ? 'white' : 'var(--text-muted)',
-                fontFamily: 'DM Sans, sans-serif',
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-              Add to Cart
+                background: product.stock > 0 ? 'var(--primary-lightest)' : 'var(--bg)',
+                color: product.stock > 0 ? 'var(--primary)' : 'var(--text-muted)',
+                borderColor: product.stock > 0 ? 'rgba(122,82,48,0.2)' : 'var(--border)',
+              }}>
+              <ShoppingCart size={13} />
+              Add
             </button>
           </div>
         </div>
       </div>
     </Link>
   );
-};
-
-export default ProductCard;
+}
