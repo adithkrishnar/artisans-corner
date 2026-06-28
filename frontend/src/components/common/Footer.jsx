@@ -36,7 +36,7 @@ export default function Footer() {
           borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-16">
+        <div className="container mx-auto py-14">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-xl font-bold text-white mb-1">
@@ -70,7 +70,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-20">
+      <div className="container mx-auto py-16 md:py-20">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-5">
@@ -133,7 +133,7 @@ export default function Footer() {
           borderTop: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="container mx-auto py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
             className="text-xs"
             style={{ color: 'rgba(255,255,255,0.3)' }}

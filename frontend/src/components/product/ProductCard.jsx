@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ShoppingCart, Heart } from 'lucide-react';
@@ -6,6 +7,7 @@ import StarRating from './StarRating';
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const [wished, setWished] = useState(false);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -16,82 +18,223 @@ export default function ProductCard({ product }) {
     }));
   };
 
+  const handleWish = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWished(w => !w);
+  };
+
+  const inStock = product.stock > 0;
+  const lowStock = inStock && product.stock <= 5;
+
   return (
-    <Link to={`/product/${product._id}`} className="block group">
-      <div className="card card-hover h-full flex flex-col">
-        <div className="relative overflow-hidden flex-shrink-0" style={{ height: '220px', background: 'var(--bg)' }}>
+    <Link to={`/product/${product._id}`} style={{ display: 'block', textDecoration: 'none' }} className="product-card-link">
+      <div
+        style={{
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-xl)',
+          overflow: 'hidden',
+          display: 'flex', flexDirection: 'column',
+          height: '100%',
+          transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
+          boxShadow: '0 1px 4px rgba(47,36,30,0.06)',
+          position: 'relative',
+        }}
+        className="product-card"
+        onMouseEnter={e => {
+          e.currentTarget.style.transform = 'translateY(-5px)';
+          e.currentTarget.style.boxShadow = '0 16px 40px rgba(47,36,30,0.14)';
+          e.currentTarget.style.borderColor = 'var(--border-strong)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 1px 4px rgba(47,36,30,0.06)';
+          e.currentTarget.style.borderColor = 'var(--border)';
+        }}
+      >
+        {/* Image */}
+        <div style={{
+          position: 'relative', overflow: 'hidden', flexShrink: 0,
+          height: '220px', background: 'var(--bg)',
+        }} className="product-image-wrap">
           {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.title}
-              className="w-full h-full object-cover transition-transform duration-700"
-              style={{ transform: 'scale(1)' }}
-              onMouseEnter={e => e.target.style.transform = 'scale(1.07)'}
-              onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
+            <img
+              src={product.imageUrl}
+              alt={product.title}
+              style={{
+                width: '100%', height: '100%', objectFit: 'cover',
+                transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
+              }}
+              className="product-img"
+            />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-5xl"
-              style={{ background: 'linear-gradient(135deg, var(--bg), var(--border))' }}>
+            <div style={{
+              width: '100%', height: '100%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '3.5rem',
+              background: 'linear-gradient(135deg, var(--bg) 0%, var(--border) 100%)',
+            }}>
               🎨
             </div>
           )}
 
-          <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
-            style={{ background: 'linear-gradient(to top, rgba(47,36,30,0.5), transparent)' }}>
-            <button onClick={handleAddToCart} disabled={product.stock === 0}
-              className="btn btn-sm flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
-              style={{ background: product.stock > 0 ? 'var(--primary)' : 'rgba(255,255,255,0.4)', color: 'white', borderColor: 'transparent', backdropFilter: 'blur(10px)' }}>
+          {/* Hover overlay with CTA */}
+          <div
+            className="product-overlay"
+            style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(to top, rgba(47,36,30,0.65) 0%, rgba(47,36,30,0.1) 60%, transparent 100%)',
+              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+              paddingBottom: '14px',
+              opacity: 0,
+              transition: 'opacity 0.3s ease',
+            }}
+          >
+            <button
+              onClick={handleAddToCart}
+              disabled={!inStock}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '7px',
+                padding: '9px 18px', borderRadius: '10px', border: 'none',
+                background: inStock ? 'var(--primary)' : 'rgba(255,255,255,0.35)',
+                color: '#fff', fontFamily: 'DM Sans, sans-serif',
+                fontSize: '0.8125rem', fontWeight: 600,
+                cursor: inStock ? 'pointer' : 'default',
+                backdropFilter: 'blur(8px)',
+                transform: 'translateY(8px)',
+                transition: 'transform 0.3s ease, box-shadow 0.2s ease',
+                boxShadow: inStock ? '0 4px 14px rgba(122,82,48,0.4)' : 'none',
+              }}
+              className="product-add-btn"
+            >
               <ShoppingCart size={14} />
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+              {inStock ? 'Add to Cart' : 'Out of Stock'}
             </button>
           </div>
 
-          <button onClick={e => { e.preventDefault(); e.stopPropagation(); }}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200"
-            style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)', border: '1px solid var(--border)' }}>
-            <Heart size={14} style={{ color: 'var(--primary)' }} />
+          {/* Wishlist button */}
+          <button
+            onClick={handleWish}
+            style={{
+              position: 'absolute', top: '10px', right: '10px',
+              width: '34px', height: '34px', borderRadius: '50%', border: 'none',
+              background: wished ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.88)',
+              backdropFilter: 'blur(10px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+              opacity: 0, transition: 'all 0.25s ease',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+            }}
+            className="product-wish-btn"
+            aria-label="Wishlist"
+          >
+            <Heart
+              size={15}
+              style={{
+                color: wished ? '#ef4444' : 'var(--primary)',
+                fill: wished ? '#ef4444' : 'none',
+                transition: 'all 0.2s',
+              }}
+            />
           </button>
 
-          {product.stock === 0 && (
-            <div className="absolute inset-0 flex items-center justify-center"
-              style={{ background: 'rgba(248,245,241,0.85)', backdropFilter: 'blur(4px)' }}>
+          {/* Badges */}
+          {!inStock && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(248,245,241,0.82)', backdropFilter: 'blur(4px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
               <span className="badge badge-muted">Out of Stock</span>
             </div>
           )}
-          {product.stock > 0 && product.stock <= 5 && (
-            <div className="absolute top-3 left-3">
+          {lowStock && (
+            <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
               <span className="badge badge-orange">Only {product.stock} left</span>
             </div>
           )}
         </div>
 
-        <div className="card-body flex flex-col flex-1 p-6">
-          <p className="label-xs mb-1.5 line-clamp-1" style={{ color: 'var(--text-muted)' }}>
+        {/* Card body */}
+        <div style={{
+          padding: '1rem 1.125rem 1.125rem',
+          display: 'flex', flexDirection: 'column', flex: 1,
+        }}>
+          {/* Store */}
+          <p className="label-xs" style={{ color: 'var(--text-muted)', marginBottom: '5px' }}>
             {product.store?.storeName || 'Artisan Store'}
           </p>
-          <h3 className="text-base font-semibold mb-3 line-clamp-2 flex-1" style={{ color: 'var(--text-primary)', lineHeight: '1.4', fontFamily: 'DM Sans, sans-serif' }}>
+
+          {/* Title */}
+          <h3 style={{
+            fontSize: '0.875rem', fontWeight: 600,
+            color: 'var(--text-primary)', lineHeight: 1.45,
+            marginBottom: '8px', flex: 1,
+            fontFamily: 'DM Sans, sans-serif',
+            display: '-webkit-box', WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          }}>
             {product.title}
           </h3>
 
-          <div className="flex items-center gap-1.5 mb-3">
+          {/* Rating */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
             <StarRating rating={product.averageRating} />
-            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>({product.totalReviews})</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({product.totalReviews})</span>
           </div>
 
-          <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
-            <span className="font-display text-xl font-bold" style={{ color: 'var(--primary)' }}>
+          {/* Price + Add */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            paddingTop: '10px', borderTop: '1px solid var(--border)',
+          }}>
+            <span className="font-display" style={{
+              fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)',
+            }}>
               ${product.price}
             </span>
-            <button onClick={handleAddToCart} disabled={product.stock === 0}
-              className="btn btn-sm"
+            <button
+              onClick={handleAddToCart}
+              disabled={!inStock}
               style={{
-                background: product.stock > 0 ? 'var(--primary-lightest)' : 'var(--bg)',
-                color: product.stock > 0 ? 'var(--primary)' : 'var(--text-muted)',
-                borderColor: product.stock > 0 ? 'rgba(122,82,48,0.2)' : 'var(--border)',
-              }}>
+                display: 'inline-flex', alignItems: 'center', gap: '5px',
+                padding: '7px 13px', borderRadius: '9px',
+                background: inStock ? 'var(--primary-lightest)' : 'var(--bg)',
+                border: `1.5px solid ${inStock ? 'rgba(122,82,48,0.22)' : 'var(--border)'}`,
+                color: inStock ? 'var(--primary)' : 'var(--text-muted)',
+                fontSize: '0.8rem', fontWeight: 600,
+                fontFamily: 'DM Sans, sans-serif', cursor: inStock ? 'pointer' : 'default',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                if (inStock) {
+                  e.currentTarget.style.background = 'var(--primary)';
+                  e.currentTarget.style.color = '#fff';
+                  e.currentTarget.style.borderColor = 'var(--primary)';
+                }
+              }}
+              onMouseLeave={e => {
+                if (inStock) {
+                  e.currentTarget.style.background = 'var(--primary-lightest)';
+                  e.currentTarget.style.color = 'var(--primary)';
+                  e.currentTarget.style.borderColor = 'rgba(122,82,48,0.22)';
+                }
+              }}
+            >
               <ShoppingCart size={13} />
               Add
             </button>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .product-card-link:hover .product-overlay { opacity: 1 !important; }
+        .product-card-link:hover .product-add-btn { transform: translateY(0) !important; }
+        .product-card-link:hover .product-wish-btn { opacity: 1 !important; }
+        .product-card-link:hover .product-img { transform: scale(1.07) !important; }
+      `}</style>
     </Link>
   );
 }

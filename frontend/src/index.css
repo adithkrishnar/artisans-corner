@@ -74,14 +74,14 @@ img { max-width: 100%; display: block; }
   display: inline-flex; align-items: center; justify-content: center;
   gap: 0.5rem; font-size: 0.875rem; font-weight: 600;
   font-family: 'DM Sans', sans-serif; border-radius: var(--radius-md);
-  padding: 0.75rem 1.5rem; transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+  padding: 0.8125rem 1.625rem; transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
   letter-spacing: 0.01em; white-space: nowrap; cursor: pointer;
   border: 1.5px solid transparent;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-.btn-sm { padding: 0.5rem 1rem; font-size: 0.8125rem; border-radius: var(--radius-sm); }
-.btn-lg { padding: 0.875rem 2rem; font-size: 0.9375rem; border-radius: var(--radius-lg); }
-.btn-xl { padding: 1rem 2.5rem; font-size: 1rem; border-radius: var(--radius-lg); }
+.btn-sm { padding: 0.5625rem 1.125rem; font-size: 0.8125rem; border-radius: var(--radius-sm); }
+.btn-lg { padding: 0.9375rem 2.25rem; font-size: 0.9375rem; border-radius: var(--radius-lg); }
+.btn-xl { padding: 1.0625rem 2.75rem; font-size: 1rem; border-radius: var(--radius-lg); }
 
 .btn-primary {
   background: var(--primary); color: #fff; border-color: var(--primary);
@@ -127,7 +127,7 @@ img { max-width: 100%; display: block; }
 .input {
   width: 100%; background: var(--surface); color: var(--text-primary);
   border: 1.5px solid var(--border); border-radius: var(--radius-md);
-  padding: 0.75rem 1rem; font-size: 0.875rem; font-family: 'DM Sans', sans-serif;
+  padding: 0.8125rem 1.0625rem; font-size: 0.875rem; font-family: 'DM Sans', sans-serif;
   transition: all 0.2s ease; line-height: 1.5;
 }
 .input::placeholder { color: var(--text-placeholder); }
@@ -148,8 +148,8 @@ select.input { cursor: pointer; }
   box-shadow: var(--shadow-xl); transform: translateY(-4px);
   border-color: var(--border-strong);
 }
-.card-body { padding: 1.5rem; }
-.card-flat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.5rem; }
+.card-body { padding: 1.75rem; }
+.card-flat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.75rem; }
 
 /* ===== BADGES ===== */
 .badge {
@@ -180,8 +180,17 @@ select.input { cursor: pointer; }
 
 /* ===== SECTION ===== */
 .section-eyebrow { color: var(--accent); }
-.section-gap { padding: 5rem 0; }
-.container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+.section-gap { padding: 6rem 0; }
+.section-gap-sm { padding: 4rem 0; }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 2rem; }
+@media (max-width: 768px) { .container { padding: 0 1.25rem; } }
+
+/* ===== SPACING UTILITIES ===== */
+.space-section { margin-bottom: 5rem; }
+.space-section-sm { margin-bottom: 3rem; }
+.px-section { padding-left: 2rem; padding-right: 2rem; }
+.py-section { padding-top: 6rem; padding-bottom: 6rem; }
+.py-section-sm { padding-top: 4rem; padding-bottom: 4rem; }
 
 /* ===== SKELETON ===== */
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
@@ -212,7 +221,7 @@ select.input { cursor: pointer; }
 /* ===== STAT CARDS ===== */
 .stat-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-xl); padding: 1.25rem;
+  border-radius: var(--radius-xl); padding: 1.5rem;
   transition: all 0.25s ease;
 }
 .stat-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); }

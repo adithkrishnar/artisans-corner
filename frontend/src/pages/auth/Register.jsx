@@ -1,8 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, User, Mail, Lock } from 'lucide-react';
 import { register, clearError } from '../../features/auth/authSlice';
+
+const INPUT_STYLE = {
+  width: '100%',
+  padding: '0.875rem 1rem 0.875rem 2.75rem',
+  background: 'var(--surface)',
+  border: '1.5px solid var(--border)',
+  borderRadius: '12px',
+  fontSize: '0.9375rem',
+  fontFamily: 'DM Sans, sans-serif',
+  color: 'var(--text-primary)',
+  outline: 'none',
+  transition: 'all 0.2s ease',
+};
+
+const FOCUS = { borderColor: 'var(--border-focus)', boxShadow: '0 0 0 4px rgba(196,122,74,0.1)', background: 'var(--bg-soft)' };
+const BLUR  = { borderColor: 'var(--border)', boxShadow: 'none', background: 'var(--surface)' };
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -12,7 +28,10 @@ export default function Register() {
   const [localError, setLocalError] = useState('');
   const [showPw, setShowPw] = useState(false);
 
-  useEffect(() => { if (user) navigate('/'); return () => dispatch(clearError()); }, [user]);
+  useEffect(() => {
+    if (user) navigate('/');
+    return () => dispatch(clearError());
+  }, [user]);
 
   const handleChange = e => { setFormData({ ...formData, [e.target.name]: e.target.value }); setLocalError(''); };
 
@@ -23,70 +42,168 @@ export default function Register() {
     dispatch(register({ name: formData.name, email: formData.email, password: formData.password }));
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center p-12 lg:p-16" style={{ background: 'var(--bg)' }}>
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle, var(--border), transparent)' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle, var(--border), transparent)' }}></div>
-      </div>
+  const displayError = localError || error;
 
-      <div className="w-full max-w-md relative animate-fade-up">
-        <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold"
-              style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}>AC</div>
-            <span className="font-display text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Artisan's Corner</span>
+  return (
+    <div style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: 'var(--bg)', padding: '2rem', position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Ambient background glows */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: 'radial-gradient(ellipse 55% 40% at 10% 10%, rgba(196,122,74,0.07) 0%, transparent 100%), radial-gradient(ellipse 60% 50% at 90% 90%, rgba(122,82,48,0.06) 0%, transparent 100%)',
+      }} />
+
+      <div style={{ width: '100%', maxWidth: '460px', position: 'relative', zIndex: 1 }} className="animate-fade-up">
+
+        {/* Logo + header */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '1.5rem' }}>
+            <div style={{
+              width: '42px', height: '42px', borderRadius: '13px',
+              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#fff', fontWeight: 800, fontSize: '0.875rem',
+              boxShadow: '0 4px 16px rgba(196,122,74,0.35)',
+            }}>AC</div>
+            <span className="font-display" style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-primary)' }}>Artisan's Corner</span>
           </Link>
-          <p className="label-sm section-eyebrow mb-2">Join us</p>
-          <h1 className="font-display text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>Create your account</h1>
-          <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>Start your journey in the handcrafted marketplace</p>
+          <p style={{
+            fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.1em',
+            textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.5rem',
+          }}>Join us</p>
+          <h1 className="font-display" style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.15, marginBottom: '0.375rem' }}>
+            Create your account
+          </h1>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+            Start your journey in the handcrafted marketplace
+          </p>
         </div>
 
-        <div className="card-flat p-8">
-          {(error || localError) && (
-            <div className="flex items-center gap-2.5 p-4 rounded-xl mb-5 text-sm animate-scale-in"
-              style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.15)', color: '#dc2626' }}>
-              ⚠ {localError || error}
+        {/* Card */}
+        <div style={{
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: '20px', padding: '2rem 2rem',
+          boxShadow: '0 8px 32px rgba(47,36,30,0.10)',
+        }}>
+          {/* Error banner */}
+          {displayError && (
+            <div className="animate-scale-in" style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '11px 14px', borderRadius: '10px', marginBottom: '1.25rem',
+              background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.15)',
+              color: '#dc2626', fontSize: '0.875rem',
+            }}>
+              ⚠ {displayError}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {[{ label: 'Full Name', name: 'name', type: 'text', placeholder: 'John Doe' },
-              { label: 'Email Address', name: 'email', type: 'email', placeholder: 'you@example.com' }].map(f => (
-              <div key={f.name}>
-                <label className="form-label">{f.label}</label>
-                <input type={f.type} name={f.name} value={formData[f.name]} onChange={handleChange}
-                  required placeholder={f.placeholder} className="input" />
-              </div>
-            ))}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
 
+            {/* Full Name */}
             <div>
-              <label className="form-label">Password</label>
-              <div className="relative">
-                <input type={showPw ? 'text' : 'password'} name="password" value={formData.password}
-                  onChange={handleChange} required placeholder="Min. 6 characters" className="input" style={{ paddingRight: '3rem' }} />
-                <button type="button" onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-muted)' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4375rem' }}>
+                Full Name
+              </label>
+              <div style={{ position: 'relative' }}>
+                <User size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="text" name="name" value={formData.name}
+                  onChange={handleChange} required placeholder="John Doe"
+                  style={INPUT_STYLE}
+                  onFocus={e => Object.assign(e.target.style, FOCUS)}
+                  onBlur={e => Object.assign(e.target.style, BLUR)}
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4375rem' }}>
+                Email Address
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Mail size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="email" name="email" value={formData.email}
+                  onChange={handleChange} required placeholder="you@example.com"
+                  style={INPUT_STYLE}
+                  onFocus={e => Object.assign(e.target.style, FOCUS)}
+                  onBlur={e => Object.assign(e.target.style, BLUR)}
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4375rem' }}>
+                Password
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type={showPw ? 'text' : 'password'} name="password" value={formData.password}
+                  onChange={handleChange} required placeholder="Min. 6 characters"
+                  style={{ ...INPUT_STYLE, paddingRight: '3rem' }}
+                  onFocus={e => Object.assign(e.target.style, FOCUS)}
+                  onBlur={e => Object.assign(e.target.style, BLUR)}
+                />
+                <button type="button" onClick={() => setShowPw(!showPw)} style={{
+                  position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: 'var(--text-muted)', display: 'flex', alignItems: 'center', transition: 'color 0.2s',
+                }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
+                >
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
+            {/* Confirm Password */}
             <div>
-              <label className="form-label">Confirm Password</label>
-              <input type="password" name="confirmPassword" value={formData.confirmPassword}
-                onChange={handleChange} required placeholder="Re-enter password" className="input" />
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.4375rem' }}>
+                Confirm Password
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="password" name="confirmPassword" value={formData.confirmPassword}
+                  onChange={handleChange} required placeholder="Re-enter password"
+                  style={INPUT_STYLE}
+                  onFocus={e => Object.assign(e.target.style, FOCUS)}
+                  onBlur={e => Object.assign(e.target.style, BLUR)}
+                />
+              </div>
             </div>
 
-            <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-2">
-              {loading ? <><div className="spinner"></div> Creating account...</> : 'Create Account →'}
+            <button
+              type="submit" disabled={loading}
+              style={{
+                width: '100%', padding: '0.9375rem',
+                borderRadius: '12px', border: 'none',
+                background: loading ? 'rgba(122,82,48,0.5)' : 'var(--primary)',
+                color: '#fff', fontFamily: 'DM Sans, sans-serif',
+                fontSize: '0.9375rem', fontWeight: 700,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                transition: 'all 0.2s cubic-bezier(0.4,0,0.2,1)',
+                boxShadow: loading ? 'none' : '0 3px 12px rgba(122,82,48,0.35)',
+                marginTop: '0.375rem',
+              }}
+              onMouseEnter={e => { if (!loading) { e.currentTarget.style.background = 'var(--primary-hover)'; e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(122,82,48,0.4)'; } }}
+              onMouseLeave={e => { if (!loading) { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 3px 12px rgba(122,82,48,0.35)'; } }}
+            >
+              {loading ? <><div className="spinner" /> Creating account...</> : <>Create Account <ArrowRight size={17} /></>}
             </button>
           </form>
         </div>
 
-        <p className="text-center text-sm mt-6" style={{ color: 'var(--text-muted)' }}>
+        <p style={{ textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>
           Already have an account?{' '}
-          <Link to="/login" className="font-semibold" style={{ color: 'var(--primary)' }}>Sign in</Link>
+          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none' }}>Sign in</Link>
         </p>
       </div>
     </div>
