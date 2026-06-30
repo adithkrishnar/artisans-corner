@@ -129,11 +129,6 @@ artisans-corner/
 │── README.md
 ```
 
----
-
-## 🗄️ Database Schema
-
-![Database Schema](docs/database_diagram.png)
 
 ---
 
